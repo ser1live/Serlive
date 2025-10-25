@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERDAR - Kişisel Bio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Canvas Efektleri */
+        #effectCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+        .social-links {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            margin: 10px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 400;
+            transition: background 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .social-links i {
+            font-size: 1.5em;
+            margin-right: 8px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .profile-img {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="effectCanvas"></canvas>
+    <div class="container">
+        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
+        <h1>SERDAR</h1>
+        <p>"Merhaba! Ben bir geliştiriciyim, kodlamayı ve yeni şeyler öğrenmeyi seviyorum. Sosyal medyada beni takip et!"</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="https://t.me/ser1live" target="_blank">
+                <i class="fab fa-telegram-plane"></i> Telegram
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Ses efekti için Audio objesi
+        const thunderSound = new Audio('https://soundbible.com/mp3/Thunder_Strike_1.mp3');
+        thunderSound.volume = 0.5;
+        
+        function playThunder() {
+            thunderSound.currentTime = 0;
+            thunderSound.play().catch(e => console.log('Ses çalınamadı:', e));
+        }
+        
+        // Canvas Setup
+        const canvas = document.getElementById('effectCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Yağmur Damlaları (Array ile yönet, canvas'ta çiz)
+        const rainDrops = [];
+        const numRainDrops = 200; // Sabit sayı, performanslı
+        for (let i = 0; i < numRainDrops; i++) {
+            rainDrops.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: Math.random() * 20 + 10,
+                speed: Math.random() * 5 + 2,
+                opacity: Math.random() * 0.5 + 0.2
+            });
+        }
+        
+        // Yıldırım Çakmaları (Array ile, sınırlı)
+        const lightnings = [];
+        let lastStrikeTime = 0;
+        const strikeInterval = 1500; // 1.5s ortalama
+        
+        // Animasyon Loop (RAF ile smooth)
+        let animationId;
+        function animate(time) {
+            ctx.clearRect(0, 0, width, height); // Temizle
+            
+            // Yağmur Çiz
+            ctx.strokeStyle = 'rgba(100, 149, 237, 0.3)';
+            ctx.lineWidth = 1;
+            rainDrops.forEach(drop => {
+                ctx.beginPath();
+                ctx.moveTo(drop.x, drop.y);
+                ctx.lineTo(drop.x - 2, drop.y + drop.length); // Eğimli yağmur
+                ctx.globalAlpha = drop.opacity;
+                ctx.stroke();
+                
+                drop.y += drop.speed;
+                if (drop.y > height) drop.y = 0; // Döngüsel
+            });
+            ctx.globalAlpha = 1;
+            
+            // Yıldırım Çiz (sınırlı, zaman bazlı)
+            if (time - lastStrikeTime > Math.random() * strikeInterval + 500) {
+                const numStrikes = Math.floor(Math.random() * 2) + 1;
+                for (let i = 0; i < numStrikes; i++) {
+                    lightnings.push({
+                        x: Math.random() * width,
+                        y: 0,
+                        height: Math.random() * 200 + 100,
+                        life: 300, // Kısa ömür (ms)
+                        glow: Math.random() * 50 + 30
+                    });
+                }
+                playThunder(); // Ses tetikle
+                lastStrikeTime = time;
+            }
+            
+            // Yıldırımları çiz ve güncelle
+            lightnings.forEach((strike, index) => {
+                if (strike.life > 0) {
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${strike.life / 300})`;
+                    ctx.lineWidth = 3;
+                    ctx.shadowBlur = strike.glow;
+                    ctx.shadowColor = '#fff';
+                    ctx.beginPath();
+                    ctx.moveTo(strike.x, strike.y);
+                    ctx.lineTo(strike.x, strike.y + strike.height);
+                    ctx.stroke();
+                    
+                    strike.life -= 16; // ~60FPS
+                } else {
+                    lightnings.splice(index, 1); // Temizle
+                }
+            });
+            ctx.shadowBlur = 0;
+            
+            animationId = requestAnimationFrame(animate);
+        }
+        
+        // Başlangıçta gecikmeli başlat (performans için)
+        setTimeout(() => {
+            animationId = requestAnimationFrame(animate);
+        }, 1000);
+        
+        // Sayfa kapatılırken temizle
+        window.addEventListener('beforeunload', () => {
+            if (animationId) cancelAnimationFrame(animationId);
+        });
+    </script>
+</body>
+</html>
