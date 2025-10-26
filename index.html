@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERDAR - Kişisel Bio (Düzeltilmiş Şimşekli 3D WebGL Fırtına)</title>
+    <title>SERDAR - Kişisel Bio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,7 +11,7 @@
             font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
-            background: #000000; /* Tam siyah arka plan */
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
             color: white;
             display: flex;
             justify-content: center;
@@ -20,7 +20,6 @@
             text-align: center;
             overflow: hidden;
             position: relative;
-            cursor: crosshair;
         }
         
         #effectCanvas {
@@ -42,12 +41,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             position: relative;
             z-index: 1;
-            animation: fadeIn 1s ease-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .profile-img {
@@ -71,6 +64,23 @@
             margin-bottom: 30px;
             opacity: 0.9;
             line-height: 1.5;
+            transition: text-shadow 0.3s ease;
+        }
+        #bioText.glow { /* Neon glow */
+            text-shadow: 
+                0 0 5px #00ffff,
+                0 0 10px #00ffff,
+                0 0 15px #00ffff,
+                0 0 20px #00ffff;
+            animation: pulse 2s infinite ease-in-out, wave 3s infinite ease-in-out; /* Nabız + dalga */
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; text-shadow: 0 0 30px #00ffff; }
+        }
+        @keyframes wave { /* Dalgalı animasyon */
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
         }
         .social-links {
             display: flex;
@@ -87,40 +97,16 @@
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease;
             backdrop-filter: blur(5px);
-            position: relative;
-            overflow: hidden;
-        }
-        .social-links a::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
-            transform: translate(-50%, -50%);
-            z-index: -1;
-        }
-        .social-links a:hover::before {
-            width: 300px;
-            height: 300px;
         }
         .social-links a:hover {
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
             background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px) scale(1.05);
+            transform: translateY(-2px);
         }
         .social-links i {
             font-size: 1.5em;
             margin-right: 8px;
-        }
-        
-        @keyframes ripple {
-            to { transform: scale(4); opacity: 0; }
         }
         
         @media (max-width: 480px) {
@@ -136,239 +122,178 @@
 <body>
     <canvas id="effectCanvas"></canvas>
     <div class="container">
-        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=300&fit=crop&crop=face';">
+        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
         <h1>SERDAR</h1>
         <p id="bioText">""Hello! I'm a passionate developer who thrives on crafting code and diving into the thrill of learning new technologies. Join me on this exciting journey—follow along for tips, tutorials, and behind-the-scenes magic!" 🌟💻🚀"</p>
         <div class="social-links">
-            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" aria-label="Instagram'a git">
+            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank">
                 <i class="fab fa-instagram"></i> Instagram
             </a>
-            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" aria-label="TikTok'a git">
+            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank">
                 <i class="fab fa-tiktok"></i> TikTok
             </a>
-            <a href="https://t.me/ser1live" target="_blank" aria-label="Telegram'a git">
+            <a href="https://t.me/ser1live" target="_blank">
                 <i class="fab fa-telegram-plane"></i> Telegram
             </a>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r161/three.min.js"></script>
     <script>
         const thunderSound = new Audio('https://soundbible.com/mp3/Thunder_Strike_1.mp3');
         thunderSound.volume = 0.5;
-        thunderSound.preload = 'auto';
         
         function playThunder() {
             thunderSound.currentTime = 0;
-            thunderSound.play().catch(() => {});
+            thunderSound.play().catch(e => console.log('Ses çalınamadı:', e));
         }
         
-        // Three.js Setup
         const canvas = document.getElementById('effectCanvas');
-        const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x000033, 0.02);
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.5, 500);
-        camera.position.set(0, 0, 10);
-        const renderer = new THREE.WebGLRenderer({ 
-            canvas, 
-            alpha: true, 
-            antialias: false, 
-            powerPreference: 'high-performance' 
-        });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0);
+        const ctx = canvas.getContext('2d');
+        let width, height, windX = 0, targetWindX = 0, lastFrameTime = 0;
+        const dpr = window.devicePixelRatio || 1;
         
-        // Resize
-        let resizeTimeout;
-        function resize() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            }, 100);
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth * dpr;
+            height = canvas.height = window.innerHeight * dpr;
+            ctx.scale(dpr, dpr);
         }
-        window.addEventListener('resize', resize);
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
         
-        // Mouse Etkileşimi
-        let mouse = new THREE.Vector2();
         document.body.addEventListener('mousemove', (e) => {
-            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            targetWindX = (e.clientX - window.innerWidth / 2) / window.innerWidth * 3;
         });
         
-        document.body.addEventListener('click', (e) => {
-            // Click'te birden fazla şimşek dalı
-            for (let i = 0; i < 2; i++) {
-                setTimeout(() => createLightning(mouse.x * 50, 0, mouse.y * 50), i * 100);
-            }
-            playThunder();
-        });
-        
-        // Yağmur
-        const rainCount = 1000;
-        const rainGeometry = new THREE.BufferGeometry();
-        const rainPositions = new Float32Array(rainCount * 3);
-        const rainVelocities = new Float32Array(rainCount * 3);
-        for (let i = 0; i < rainCount; i++) {
-            rainPositions[i * 3] = (Math.random() - 0.5) * 100;
-            rainPositions[i * 3 + 1] = Math.random() * 50 - 25;
-            rainPositions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-            rainVelocities[i * 3 + 1] = -0.1 - Math.random() * 0.05;
-        }
-        rainGeometry.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
-        const rainMaterial = new THREE.PointsMaterial({ color: 0x6495ed, size: 0.05, transparent: true, opacity: 0.6 });
-        const rain = new THREE.Points(rainGeometry, rainMaterial);
-        scene.add(rain);
-        
-        // Sis/Duman
-        const smokeCount = 300;
-        const smokeGeometry = new THREE.BufferGeometry();
-        const smokePositions = new Float32Array(smokeCount * 3);
-        const smokeVelocitiesX = new Float32Array(smokeCount);
-        const smokeSizes = new Float32Array(smokeCount);
-        for (let i = 0; i < smokeCount; i++) {
-            smokePositions[i * 3] = (Math.random() - 0.5) * 100;
-            smokePositions[i * 3 + 1] = Math.random() * 20;
-            smokePositions[i * 3 + 2] = (Math.random() - 0.5) * 100;
-            smokeVelocitiesX[i] = (Math.random() - 0.5) * 0.02;
-            smokeSizes[i] = Math.random() * 0.3 + 0.1;
-        }
-        smokeGeometry.setAttribute('position', new THREE.BufferAttribute(smokePositions, 3));
-        smokeGeometry.setAttribute('size', new THREE.BufferAttribute(smokeSizes, 1));
-        const smokeMaterial = new THREE.PointsMaterial({ 
-            color: 0x333366, 
-            size: 0.3, 
-            transparent: true, 
-            opacity: 0.3, 
-            sizeAttenuation: true 
-        });
-        const smoke = new THREE.Points(smokeGeometry, smokeMaterial);
-        scene.add(smoke);
-        
-        // Düzeltilmiş Şimşek: TubeGeometry ile kalın tüp
-        let lightnings = [];
-        let fogPulse = 1;
-        function createLightning(startX, startY, startZ) {
-            const points = [];
-            points.push(new THREE.Vector3(startX, startY, startZ));
-            let current = { x: startX, y: startY - 20, z: startZ };
-            for (let i = 0; i < 6; i++) { // Daha fazla dal
-                current.x += (Math.random() - 0.5) * 10;
-                current.y -= 3.33; // 20/6
-                current.z += (Math.random() - 0.5) * 10;
-                points.push(new THREE.Vector3(current.x, current.y, current.z));
-            }
-            const curve = new THREE.CatmullRomCurve3(points);
-            const tubeGeometry = new THREE.TubeGeometry(curve, 64, 0.5, 8, false); // Kalınlık 0.5, segment 64
-            const tubeMaterial = new THREE.MeshBasicMaterial({ 
-                color: 0xffffff, 
-                transparent: true, 
-                opacity: 1,
-                side: THREE.DoubleSide
+        const rainDrops = [];
+        const numRainDrops = 50; // Daha da azaltıldı
+        for (let i = 0; i < numRainDrops; i++) {
+            rainDrops.push({
+                x: Math.random() * width / dpr,
+                y: Math.random() * height / dpr,
+                length: Math.random() * 20 + 10,
+                speed: Math.random() * 5 + 2,
+                opacity: Math.random() * 0.5 + 0.2,
+                waveOffset: Math.random() * Math.PI * 2
             });
-            const lightning = new THREE.Mesh(tubeGeometry, tubeMaterial);
-            scene.add(lightning);
-            lightnings.push({ mesh: lightning, life: 45, geometry: tubeGeometry, material: tubeMaterial });
-            
-            fogPulse = 0.5;
         }
         
-        // Otomatik Yıldırım (daha sık)
-        let lastStrike = 0;
-        const minStrikeInterval = 1500;
-        const maxStrikeInterval = 2500;
-        function randomLightning() {
-            const now = Date.now();
-            if (now - lastStrike > minStrikeInterval + Math.random() * (maxStrikeInterval - minStrikeInterval)) {
-                createLightning((Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100);
-                playThunder();
-                lastStrike = now;
-            }
+        const lightnings = [];
+        let lastStrikeTime = 0;
+        const strikeInterval = 1500;
+        
+        function drawFog() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, height / dpr);
+            gradient.addColorStop(0, 'rgba(100, 149, 237, 0.05)'); // Mavi ton, daha yoğun
+            gradient.addColorStop(0.5, 'rgba(169, 169, 169, 0.1)'); // Güçlendirildi
+            gradient.addColorStop(1, 'rgba(100, 149, 237, 0.03)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width / dpr, height / dpr);
         }
         
-        // Animasyon Loop
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            // Yağmur Güncelle
-            const rainPos = rain.geometry.attributes.position.array;
-            for (let i = 0; i < rainCount * 3; i += 3) {
-                rainPos[i + 1] += rainVelocities[i + 1];
-                rainPos[i] += mouse.x * 0.1;
-                rainPos[i + 2] += mouse.y * 0.1;
-                if (rainPos[i + 1] < -50) rainPos[i + 1] = 50;
+        function generateSegments(x, y, height) {
+            const segments = [{x, y}];
+            let currX = x, currY = y;
+            for (let i = 0; i < 5; i++) {
+                currY += height / 5;
+                currX += (Math.random() - 0.5) * 50;
+                segments.push({x: currX, y: currY});
             }
-            rain.geometry.attributes.position.needsUpdate = true;
-            
-            // Sis/Duman Güncelle
-            const smokePos = smoke.geometry.attributes.position.array;
-            const smokeSize = smoke.geometry.attributes.size.array;
-            for (let i = 0; i < smokeCount * 3; i += 3) {
-                smokePos[i + 1] -= 0.005 + Math.sin(Date.now() * 0.001 + i) * 0.001;
-                smokePos[i] += smokeVelocitiesX[i] + mouse.x * 0.01;
-                smokeSize[i] = smokeSizes[i] + Math.sin(Date.now() * 0.002 + i) * 0.05;
-                if (smokePos[i + 1] < -10) {
-                    smokePos[i + 1] = 20;
-                    smokeVelocitiesX[i] = (Math.random() - 0.5) * 0.02;
+            return segments;
+        }
+        
+        function easeOut(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+        
+        let animationId;
+        function animate(time) {
+            if (Date.now() - lastFrameTime > 16) {
+                windX += (targetWindX - windX) * 0.1;
+                
+                ctx.clearRect(0, 0, width / dpr, height / dpr);
+                drawFog();
+                
+                // Yağmur
+                ctx.strokeStyle = 'rgba(100, 149, 237, 0.3)';
+                ctx.lineWidth = 1;
+                const wave = Math.sin(time * 0.001);
+                rainDrops.forEach(drop => {
+                    ctx.beginPath();
+                    ctx.moveTo(drop.x, drop.y);
+                    ctx.lineTo(drop.x - 2 + windX * 5, drop.y + drop.length);
+                    ctx.globalAlpha = drop.opacity;
+                    ctx.stroke();
+                    
+                    drop.x += windX * 0.5;
+                    drop.y += drop.speed + Math.sin(time * 0.001 + drop.waveOffset) * 0.5;
+                    if (drop.y > height / dpr) drop.y = 0;
+                    if (drop.x < 0 || drop.x > width / dpr) drop.x = Math.random() * width / dpr;
+                });
+                ctx.globalAlpha = 1;
+                
+                // Yıldırım tetikle
+                if (time - lastStrikeTime > Math.random() * strikeInterval + 500) {
+                    const numStrikes = Math.floor(Math.random() * 2) + 1;
+                    for (let i = 0; i < numStrikes; i++) {
+                        lightnings.push({
+                            segments: generateSegments(Math.random() * width / dpr, 0, Math.random() * 200 + 100),
+                            life: 300,
+                            glow: Math.random() * 50 + 30
+                        });
+                    }
+                    playThunder();
+                    lastStrikeTime = time;
                 }
+                
+                // Yıldırımlar
+                lightnings.forEach((strike, index) => {
+                    if (strike.life > 0) {
+                        const alpha = easeOut(strike.life / 300);
+                        ctx.beginPath();
+                        ctx.moveTo(strike.segments[0].x, strike.segments[0].y);
+                        for (let i = 1; i < strike.segments.length; i++) {
+                            ctx.lineTo(strike.segments[i].x, strike.segments[i].y);
+                        }
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        ctx.lineWidth = 3;
+                        ctx.shadowBlur = strike.glow * alpha;
+                        ctx.shadowColor = '#fff';
+                        ctx.stroke();
+                        strike.life -= 16;
+                    } else {
+                        lightnings.splice(index, 1);
+                    }
+                });
+                ctx.shadowBlur = 0;
+                
+                lastFrameTime = Date.now();
             }
-            smoke.geometry.attributes.position.needsUpdate = true;
-            smoke.geometry.attributes.size.needsUpdate = true;
-            smoke.material.opacity = 0.3 * fogPulse;
-            
-            // Sis pulse
-            if (fogPulse < 1) fogPulse += 0.02;
-            
-            // Yıldırımlar Güncelle + Dispose
-            lightnings = lightnings.filter(l => {
-                l.life--;
-                l.mesh.material.opacity = l.life / 45;
-                if (l.life <= 0) {
-                    scene.remove(l.mesh);
-                    l.geometry.dispose();
-                    l.material.dispose();
-                    return false;
-                }
-                return true;
-            });
-            
-            randomLightning();
-            renderer.render(scene, camera);
+            animationId = requestAnimationFrame(animate);
         }
-        animate();
         
-        // Typing Efekti
+        setTimeout(() => {
+            animationId = requestAnimationFrame(animate);
+        }, 1000);
+        
+        window.addEventListener('beforeunload', () => {
+            if (animationId) cancelAnimationFrame(animationId);
+        });
+        
+        // Typing + Glow + Dalga
         const bioText = document.getElementById('bioText');
-        const fullText = `""Hello! I'm a passionate developer who thrives on crafting code and diving into the thrill of learning new technologies. Join me on this exciting journey—follow along for tips, tutorials, and behind-the-scenes magic!" 🌟💻🚀"`;
+        const fullText = bioText.textContent;
         bioText.textContent = '';
         let charIndex = 0;
-        let baseDelay = 50;
         function typeWriter() {
             if (charIndex < fullText.length) {
                 bioText.textContent += fullText.charAt(charIndex);
                 charIndex++;
-                const windSpeed = Math.abs(mouse.x) + Math.abs(mouse.y);
-                setTimeout(typeWriter, baseDelay - windSpeed * 20);
+                setTimeout(typeWriter, 50 + Math.random() * 50);
+            } else {
+                bioText.classList.add('glow'); // Glow ve dalga aktif
             }
         }
         window.addEventListener('load', typeWriter);
-        
-        // Ripple
-        const socialLinks = document.querySelector('.social-links');
-        socialLinks.addEventListener('click', (e) => {
-            if (e.target.closest('a')) {
-                const ripple = document.createElement('span');
-                const link = e.target.closest('a');
-                ripple.style.cssText = `
-                    position: absolute; border-radius: 50%; background: rgba(255,255,255,0.6);
-                    transform: scale(0); animation: ripple 0.6s linear; left: ${e.offsetX}px; top: ${e.offsetY}px;
-                    width: 20px; height: 20px;
-                `;
-                link.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            }
-        });
     </script>
 </body>
 </html>
