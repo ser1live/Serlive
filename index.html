@@ -124,7 +124,7 @@
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
         <h1>SERDAR</h1>
-        <p id="bioText">""Hello! I'm a passionate developer who thrives on crafting code and diving into the thrill of learning new technologies. Join me on this exciting journey—follow along for tips, tutorials, and behind-the-scenes magic!" 🌟💻🚀"</p>
+        <p id="bioText">SERDAR | Software Developer | Coffee lover ☕ | Turning bugs into features since 2024 😄💻</p>
         <div class="social-links">
             <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank">
                 <i class="fab fa-instagram"></i> Instagram
@@ -165,7 +165,7 @@
         });
         
         const rainDrops = [];
-        const numRainDrops = 50; // Daha da azaltıldı
+        const numRainDrops = 50;
         for (let i = 0; i < numRainDrops; i++) {
             rainDrops.push({
                 x: Math.random() * width / dpr,
@@ -183,8 +183,8 @@
         
         function drawFog() {
             const gradient = ctx.createLinearGradient(0, 0, 0, height / dpr);
-            gradient.addColorStop(0, 'rgba(100, 149, 237, 0.05)'); // Mavi ton, daha yoğun
-            gradient.addColorStop(0.5, 'rgba(169, 169, 169, 0.1)'); // Güçlendirildi
+            gradient.addColorStop(0, 'rgba(100, 149, 237, 0.05)');
+            gradient.addColorStop(0.5, 'rgba(169, 169, 169, 0.1)');
             gradient.addColorStop(1, 'rgba(100, 149, 237, 0.03)');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, width / dpr, height / dpr);
