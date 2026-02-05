@@ -7,11 +7,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000;
             color: white;
             display: flex;
             justify-content: center;
@@ -22,6 +26,61 @@
             position: relative;
         }
         
+        /* Animated gradient background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #000000, #1a1a2e, #0f3460, #1a1a2e, #000000);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -3;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+        
+        /* Canvas effects */
         #effectCanvas {
             position: fixed;
             top: 0;
@@ -32,268 +91,463 @@
             z-index: -1;
         }
         
+        /* Container with glass morphism */
         .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px 30px;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
+            animation: containerFadeIn 1s ease;
         }
         
+        @keyframes containerFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Glowing border effect */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00, #00ffff);
+            border-radius: 30px;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(20px);
+            background-size: 400%;
+            animation: glowRotate 8s linear infinite;
+            transition: opacity 0.3s;
+        }
+        
+        .container:hover::before {
+            opacity: 0.6;
+        }
+        
+        @keyframes glowRotate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Profile image */
         .profile-img {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            margin: 0 auto 20px;
+            margin: 0 auto 25px;
             display: block;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             object-fit: cover;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.3),
+                0 10px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s ease;
+            animation: profilePulse 3s ease-in-out infinite;
         }
         
+        @keyframes profilePulse {
+            0%, 100% {
+                box-shadow: 
+                    0 0 30px rgba(0, 255, 255, 0.3),
+                    0 10px 40px rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                box-shadow: 
+                    0 0 50px rgba(0, 255, 255, 0.6),
+                    0 10px 60px rgba(0, 0, 0, 0.7);
+            }
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 0 60px rgba(0, 255, 255, 0.8),
+                0 15px 80px rgba(0, 0, 0, 0.8);
+        }
+        
+        /* Name heading */
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 3em;
+            margin-bottom: 15px;
             font-weight: 600;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGradient 5s ease infinite;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
+        
+        @keyframes textGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Bio text */
         #bioText {
-            font-size: 1.2em;
-            margin-bottom: 30px;
+            font-size: 1.1em;
+            margin-bottom: 35px;
             opacity: 0.9;
-            line-height: 1.5;
-            transition: text-shadow 0.3s ease;
+            line-height: 1.6;
+            transition: all 0.3s ease;
         }
-        #bioText.glow { /* Neon glow */
+        
+        #bioText.glow {
             text-shadow: 
-                0 0 5px #00ffff,
-                0 0 10px #00ffff,
-                0 0 15px #00ffff,
-                0 0 20px #00ffff;
-            animation: pulse 2s infinite ease-in-out, wave 3s infinite ease-in-out; /* Nabız + dalga */
+                0 0 10px rgba(0, 255, 255, 0.8),
+                0 0 20px rgba(0, 255, 255, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3);
+            animation: textPulse 2s ease-in-out infinite;
         }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.9; }
-            50% { opacity: 1; text-shadow: 0 0 30px #00ffff; }
+        
+        @keyframes textPulse {
+            0%, 100% { 
+                opacity: 0.9; 
+                transform: translateY(0);
+            }
+            50% { 
+                opacity: 1; 
+                transform: translateY(-3px);
+                text-shadow: 
+                    0 0 15px rgba(0, 255, 255, 1),
+                    0 0 30px rgba(0, 255, 255, 0.7),
+                    0 0 45px rgba(0, 255, 255, 0.5);
+            }
         }
-        @keyframes wave { /* Dalgalı animasyon */
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-3px); }
-        }
+        
+        /* Social links */
         .social-links {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
+            gap: 15px;
         }
+        
         .social-links a {
             display: inline-flex;
             align-items: center;
-            margin: 10px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.2);
+            padding: 14px 24px;
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
-            transition: background 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        .social-links a:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        .social-links i {
-            font-size: 1.5em;
-            margin-right: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
         }
         
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .social-links a:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .social-links a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+            border-color: rgba(0, 255, 255, 0.5);
+        }
+        
+        .social-links i {
+            font-size: 1.5em;
+            margin-right: 10px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        
+        .social-links a:hover i {
+            transform: rotate(360deg);
+        }
+        
+        .social-links span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Responsive */
         @media (max-width: 480px) {
             .container {
-                margin: 20px;
-                padding: 30px 20px;
+                padding: 35px 25px;
             }
-            h1 { font-size: 2em; }
-            .profile-img { width: 100px; height: 100px; }
+            h1 { 
+                font-size: 2.2em; 
+            }
+            .profile-img { 
+                width: 120px; 
+                height: 120px; 
+            }
+            #bioText {
+                font-size: 1em;
+            }
+            .social-links a {
+                padding: 12px 18px;
+                font-size: 0.9em;
+            }
+        }
+        
+        /* Reduce motion for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Animated background -->
+    <div class="bg-gradient"></div>
+    
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Canvas for additional effects -->
     <canvas id="effectCanvas"></canvas>
+    
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
         <h1>SERDAR</h1>
         <p id="bioText">SERDAR | Software Developer | Coffee lover ☕ | Turning bugs into features since 2024 😄💻</p>
         <div class="social-links">
-            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank">
-                <i class="fab fa-instagram"></i> Instagram
+            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
             </a>
-            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank">
-                <i class="fab fa-tiktok"></i> TikTok
+            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-tiktok"></i>
+                <span>TikTok</span>
             </a>
-            <a href="https://t.me/ser1live" target="_blank">
-                <i class="fab fa-telegram-plane"></i> Telegram
+            <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer">
+                <i class="fab fa-telegram-plane"></i>
+                <span>Telegram</span>
             </a>
         </div>
     </div>
 
     <script>
-        const thunderSound = new Audio('https://soundbible.com/mp3/Thunder_Strike_1.mp3');
-        thunderSound.volume = 0.5;
+        // Optimize for mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
-        function playThunder() {
-            thunderSound.currentTime = 0;
-            thunderSound.play().catch(e => console.log('Ses çalınamadı:', e));
+        // Create floating particles
+        if (!prefersReducedMotion) {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = isMobile ? 20 : 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 4 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                particlesContainer.appendChild(particle);
+            }
         }
         
+        // Canvas setup for rain and lightning effects
         const canvas = document.getElementById('effectCanvas');
         const ctx = canvas.getContext('2d');
         let width, height, windX = 0, targetWindX = 0, lastFrameTime = 0;
-        const dpr = window.devicePixelRatio || 1;
         
         function resizeCanvas() {
-            width = canvas.width = window.innerWidth * dpr;
-            height = canvas.height = window.innerHeight * dpr;
-            ctx.scale(dpr, dpr);
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
         resizeCanvas();
         window.addEventListener('resize', resizeCanvas);
         
-        document.body.addEventListener('mousemove', (e) => {
-            targetWindX = (e.clientX - window.innerWidth / 2) / window.innerWidth * 3;
-        });
-        
-        const rainDrops = [];
-        const numRainDrops = 50;
-        for (let i = 0; i < numRainDrops; i++) {
-            rainDrops.push({
-                x: Math.random() * width / dpr,
-                y: Math.random() * height / dpr,
-                length: Math.random() * 20 + 10,
-                speed: Math.random() * 5 + 2,
-                opacity: Math.random() * 0.5 + 0.2,
-                waveOffset: Math.random() * Math.PI * 2
+        // Mouse interaction
+        if (!isMobile) {
+            document.body.addEventListener('mousemove', (e) => {
+                targetWindX = (e.clientX - window.innerWidth / 2) / window.innerWidth * 2;
             });
         }
         
+        // Rain drops - optimized count
+        const rainDrops = [];
+        const numRainDrops = isMobile ? 30 : 60;
+        
+        for (let i = 0; i < numRainDrops; i++) {
+            rainDrops.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                length: Math.random() * 15 + 10,
+                speed: Math.random() * 4 + 3,
+                opacity: Math.random() * 0.4 + 0.2
+            });
+        }
+        
+        // Lightning system
         const lightnings = [];
         let lastStrikeTime = 0;
-        const strikeInterval = 1500;
+        const strikeInterval = 3000;
         
-        function drawFog() {
-            const gradient = ctx.createLinearGradient(0, 0, 0, height / dpr);
-            gradient.addColorStop(0, 'rgba(100, 149, 237, 0.05)');
-            gradient.addColorStop(0.5, 'rgba(169, 169, 169, 0.1)');
-            gradient.addColorStop(1, 'rgba(100, 149, 237, 0.03)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, width / dpr, height / dpr);
-        }
-        
-        function generateSegments(x, y, height) {
-            const segments = [{x, y}];
+        function generateLightning(x, y, segments = 6) {
+            const points = [{x, y}];
             let currX = x, currY = y;
-            for (let i = 0; i < 5; i++) {
-                currY += height / 5;
-                currX += (Math.random() - 0.5) * 50;
-                segments.push({x: currX, y: currY});
+            
+            for (let i = 0; i < segments; i++) {
+                currY += height / segments;
+                currX += (Math.random() - 0.5) * 60;
+                points.push({x: currX, y: currY});
             }
-            return segments;
+            return points;
         }
         
-        function easeOut(t) {
-            return 1 - Math.pow(1 - t, 3);
-        }
-        
+        // Optimized animation loop
         let animationId;
-        function animate(time) {
-            if (Date.now() - lastFrameTime > 16) {
-                windX += (targetWindX - windX) * 0.1;
+        function animate(timestamp) {
+            const deltaTime = timestamp - lastFrameTime;
+            
+            if (deltaTime > 16.67) { // ~60 FPS cap
+                windX += (targetWindX - windX) * 0.05;
                 
-                ctx.clearRect(0, 0, width / dpr, height / dpr);
-                drawFog();
+                ctx.clearRect(0, 0, width, height);
                 
-                // Yağmur
-                ctx.strokeStyle = 'rgba(100, 149, 237, 0.3)';
-                ctx.lineWidth = 1;
-                const wave = Math.sin(time * 0.001);
+                // Draw rain
+                ctx.strokeStyle = 'rgba(100, 200, 255, 0.4)';
+                ctx.lineWidth = 1.5;
+                
                 rainDrops.forEach(drop => {
+                    ctx.globalAlpha = drop.opacity;
                     ctx.beginPath();
                     ctx.moveTo(drop.x, drop.y);
-                    ctx.lineTo(drop.x - 2 + windX * 5, drop.y + drop.length);
-                    ctx.globalAlpha = drop.opacity;
+                    ctx.lineTo(drop.x - 1 + windX * 3, drop.y + drop.length);
                     ctx.stroke();
                     
-                    drop.x += windX * 0.5;
-                    drop.y += drop.speed + Math.sin(time * 0.001 + drop.waveOffset) * 0.5;
-                    if (drop.y > height / dpr) drop.y = 0;
-                    if (drop.x < 0 || drop.x > width / dpr) drop.x = Math.random() * width / dpr;
+                    drop.x += windX * 0.3;
+                    drop.y += drop.speed;
+                    
+                    if (drop.y > height) {
+                        drop.y = -10;
+                        drop.x = Math.random() * width;
+                    }
+                    if (drop.x < 0) drop.x = width;
+                    if (drop.x > width) drop.x = 0;
                 });
+                
                 ctx.globalAlpha = 1;
                 
-                // Yıldırım tetikle
-                if (time - lastStrikeTime > Math.random() * strikeInterval + 500) {
-                    const numStrikes = Math.floor(Math.random() * 2) + 1;
-                    for (let i = 0; i < numStrikes; i++) {
-                        lightnings.push({
-                            segments: generateSegments(Math.random() * width / dpr, 0, Math.random() * 200 + 100),
-                            life: 300,
-                            glow: Math.random() * 50 + 30
-                        });
-                    }
-                    playThunder();
-                    lastStrikeTime = time;
+                // Lightning strikes
+                if (!isMobile && timestamp - lastStrikeTime > strikeInterval + Math.random() * 2000) {
+                    lightnings.push({
+                        points: generateLightning(Math.random() * width, 0),
+                        life: 250,
+                        maxLife: 250
+                    });
+                    lastStrikeTime = timestamp;
                 }
                 
-                // Yıldırımlar
-                lightnings.forEach((strike, index) => {
-                    if (strike.life > 0) {
-                        const alpha = easeOut(strike.life / 300);
-                        ctx.beginPath();
-                        ctx.moveTo(strike.segments[0].x, strike.segments[0].y);
-                        for (let i = 1; i < strike.segments.length; i++) {
-                            ctx.lineTo(strike.segments[i].x, strike.segments[i].y);
-                        }
+                // Draw lightning
+                lightnings.forEach((lightning, index) => {
+                    if (lightning.life > 0) {
+                        const alpha = lightning.life / lightning.maxLife;
+                        
                         ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
                         ctx.lineWidth = 3;
-                        ctx.shadowBlur = strike.glow * alpha;
-                        ctx.shadowColor = '#fff';
+                        ctx.shadowBlur = 20 * alpha;
+                        ctx.shadowColor = '#00ffff';
+                        
+                        ctx.beginPath();
+                        ctx.moveTo(lightning.points[0].x, lightning.points[0].y);
+                        for (let i = 1; i < lightning.points.length; i++) {
+                            ctx.lineTo(lightning.points[i].x, lightning.points[i].y);
+                        }
                         ctx.stroke();
-                        strike.life -= 16;
+                        
+                        lightning.life -= deltaTime;
                     } else {
                         lightnings.splice(index, 1);
                     }
                 });
-                ctx.shadowBlur = 0;
                 
-                lastFrameTime = Date.now();
+                ctx.shadowBlur = 0;
+                lastFrameTime = timestamp;
             }
+            
             animationId = requestAnimationFrame(animate);
         }
         
-        setTimeout(() => {
-            animationId = requestAnimationFrame(animate);
-        }, 1000);
+        // Start animations after page load
+        if (!prefersReducedMotion) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    animationId = requestAnimationFrame(animate);
+                }, 500);
+            });
+        }
         
+        // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             if (animationId) cancelAnimationFrame(animationId);
         });
         
-        // Typing + Glow + Dalga
+        // Typing effect for bio text
         const bioText = document.getElementById('bioText');
         const fullText = bioText.textContent;
         bioText.textContent = '';
         let charIndex = 0;
+        
         function typeWriter() {
             if (charIndex < fullText.length) {
                 bioText.textContent += fullText.charAt(charIndex);
                 charIndex++;
-                setTimeout(typeWriter, 50 + Math.random() * 50);
+                setTimeout(typeWriter, 40 + Math.random() * 40);
             } else {
-                bioText.classList.add('glow'); // Glow ve dalga aktif
+                bioText.classList.add('glow');
             }
         }
-        window.addEventListener('load', typeWriter);
+        
+        if (!prefersReducedMotion) {
+            window.addEventListener('load', () => {
+                setTimeout(typeWriter, 800);
+            });
+        } else {
+            bioText.textContent = fullText;
+        }
     </script>
 </body>
 </html>
