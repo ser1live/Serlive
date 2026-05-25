@@ -75,13 +75,14 @@
             margin: 0 auto 20px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(0, 255, 255, 0.3);
-            box-shadow: 0 5px 25px rgba(0, 255, 255, 0.2);
-            transition: transform 0.3s ease;
+            border: 3px solid rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         
         .profile-img:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
         }
         
         /* İsim */
@@ -101,6 +102,18 @@
             line-height: 1.6;
             color: #e0e0e0;
         }
+
+        /* Yeni daktilo imlecinin yanıp sönme efekti */
+        .cursor {
+            color: #00ffff;
+            animation: blink 0.7s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
         
         /* Social links */
         .social-links {
@@ -114,20 +127,23 @@
             display: inline-flex;
             align-items: center;
             padding: 12px 22px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
+        /* Güncellenen güçlü neon hover efekti */
         .social-links a:hover {
-            background: rgba(0, 255, 255, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(0, 255, 255, 0.3);
-            border-color: rgba(0, 255, 255, 0.5);
+            color: #00ffff;
+            border-color: rgba(0, 255, 255, 0.6);
+            background: rgba(0, 255, 255, 0.08);
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4),
+                        inset 0 0 10px rgba(0, 255, 255, 0.2);
         }
         
         .social-links i {
@@ -157,7 +173,11 @@
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
         <h1>SERDAR</h1>
-        <p id="bioText"> | Software Developer | Coffee lover ☕ | Turning bugs into features since 2024 😄💻</p>
+        
+        <p id="bioText">
+            | Software Developer | <span id="dynamicText" style="color: #00ffff; font-weight: 600;"></span><span class="cursor">|</span>
+        </p>
+
         <div class="social-links">
             <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer">
                 <i class="fab fa-instagram"></i>
@@ -175,23 +195,41 @@
     </div>
 
     <script>
-        // Basit typing effect
-        const bioText = document.getElementById('bioText');
-        const fullText = bioText.textContent;
-        bioText.textContent = '';
-        let charIndex = 0;
+        const dynamicText = document.getElementById('dynamicText');
         
-        function typeWriter() {
-            if (charIndex < fullText.length) {
-                bioText.textContent += fullText.charAt(charIndex);
+        // Buradaki kelimeleri dilediğin gibi değiştirebilir veya yenilerini ekleyebilirsin
+        const words = ["Coffee lover ☕", "Bug hunter 🐜", "Problem solver 🚀", "Clean code fan 💻"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                dynamicText.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                dynamicText.textContent = currentWord.substring(0, charIndex + 1);
                 charIndex++;
-                setTimeout(typeWriter, 30);
             }
+            
+            let typeSpeed = isDeleting ? 40 : 80;
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 1500; // Kelime yazılınca ekranda 1.5 saniye bekler
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length; // Listeyi sonsuz döngüye sokar
+                typeSpeed = 400; 
+            }
+            
+            setTimeout(typeEffect, typeSpeed);
         }
         
-        // Sayfa yüklendikten sonra başlat
         window.addEventListener('load', () => {
-            setTimeout(typeWriter, 500);
+            setTimeout(typeEffect, 600);
         });
     </script>
 </body>
