@@ -15,56 +15,84 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            background-color: #05050a;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             text-align: center;
-            overflow-x: hidden;
+            overflow: hidden;
+            position: relative;
         }
         
-        /* Basit animasyonlu arkaplan */
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
+        /* Arka plan dalga efekti */
+        .wave-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a14 0%, #05050a 100%);
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(0,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-            z-index: -1;
+            top: -50%;
+            left: -50%;
+            border-radius: 43%;
+            animation: waveAnimation 25s linear infinite;
+            
+            /* 60 FPS İÇİN GPU TETİKLEYİCİLER */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+        }
+
+        .wave.one {
+            background: radial-gradient(circle, rgba(0, 255, 255, 0.08) 0%, transparent 60%);
+            animation-duration: 20s;
+        }
+
+        .wave.two {
+            background: radial-gradient(circle, rgba(157, 0, 255, 0.06) 0%, transparent 60%);
+            animation-duration: 30s;
+            animation-direction: reverse;
         }
         
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* 3D Render destekli animasyon */
+        @keyframes waveAnimation {
+            0% { transform: translate3d(0,0,0) rotate(0deg); }
+            100% { transform: translate3d(0,0,0) rotate(360deg); }
         }
         
         /* Container */
         .container {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             border-radius: 25px;
             padding: 45px 35px;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            animation: fadeIn 0.8s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            z-index: 1;
+            
+            /* Akıcı kart açılışı için */
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
         }
         
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translate3d(0, 20px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
         /* Profil resmi */
@@ -75,14 +103,15 @@
             margin: 0 auto 20px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(0, 255, 255, 0.5);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            will-change: transform;
         }
         
         .profile-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+            transform: scale(1.05) translate3d(0, 0, 0);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
         }
         
         /* İsim */
@@ -91,7 +120,7 @@
             margin-bottom: 15px;
             font-weight: 600;
             color: #00ffff;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
         }
         
         /* Bio text */
@@ -103,11 +132,12 @@
             color: #e0e0e0;
         }
 
-        /* Daktilo imlecinin yanıp sönme efekti */
+        /* Daktilo imleci */
         .cursor {
             color: #00ffff;
             animation: blink 0.7s infinite;
             margin-left: 2px;
+            will-change: opacity;
         }
 
         @keyframes blink {
@@ -123,53 +153,57 @@
             gap: 12px;
         }
         
+        /* iOS Aynalı Cam Düğme Tasarımı */
         .social-links a {
             display: inline-flex;
             align-items: center;
-            padding: 12px 22px;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
+            padding: 14px 26px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.2);
+            
+            /* 60 FPS Buton İvmesi */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
         
-        /* Güçlü neon hover efekti */
+        /* iOS Premium Hover Durumu */
         .social-links a:hover {
             color: #00ffff;
-            border-color: rgba(0, 255, 255, 0.6);
-            background: rgba(0, 255, 255, 0.08);
-            transform: translateY(-4px);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4),
-                        inset 0 0 10px rgba(0, 255, 255, 0.2);
+            border-color: rgba(0, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 255, 255, 0.05) 100%);
+            transform: scale(1.04) translate3d(0, -2px, 0);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 10px 25px rgba(0, 255, 255, 0.25);
         }
         
         .social-links i {
-            font-size: 1.4em;
-            margin-right: 8px;
+            font-size: 1.3em;
+            margin-right: 10px;
         }
         
         /* Responsive */
         @media (max-width: 480px) {
-            .container {
-                padding: 35px 25px;
-            }
-            h1 { 
-                font-size: 2.2em; 
-            }
-            .profile-img { 
-                width: 110px; 
-                height: 110px; 
-            }
-            #bioText {
-                font-size: 0.95em;
-            }
+            .container { padding: 35px 25px; }
+            h1 { font-size: 2.2em; }
+            .profile-img { width: 110px; height: 110px; }
+            #bioText { font-size: 0.95em; }
         }
     </style>
 </head>
 <body>
+
+    <div class="wave-bg">
+        <div class="wave one"></div>
+        <div class="wave two"></div>
+    </div>
+
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
         <h1>SERDAR</h1>
@@ -196,8 +230,6 @@
 
     <script>
         const dynamicText = document.getElementById('dynamicText');
-        
-        // Yeni havalı ve sade kelime listemiz
         const words = ["Web Developer 🌐", "Turning ideas into reality 💡", "Focusing on clean code ✨", "Always adapting, always learning 🚀"];
         let wordIndex = 0;
         let charIndex = 0;
@@ -217,11 +249,11 @@
             let typeSpeed = isDeleting ? 40 : 80;
             
             if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 1500; // Kelime yazılınca ekranda 1.5 saniye bekler
+                typeSpeed = 1500;
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length; // Listeyi sonsuz döngüye sokar
+                wordIndex = (wordIndex + 1) % words.length;
                 typeSpeed = 400; 
             }
             
