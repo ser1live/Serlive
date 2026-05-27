@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #05050a;
+            background-color: #030308; /* Gemini'ın o asil koyu arka planı */
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* Arka plan dalga efekti */
+        /* GÜNCELLENEN ALAN: Gemini Akışkan Yapay Zeka Arka Planı */
         .wave-bg {
             position: absolute;
             top: 0;
@@ -34,37 +34,44 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(135deg, #0a0a14 0%, #05050a 100%);
+            background: linear-gradient(135deg, #050515 0%, #030308 100%);
             overflow: hidden;
         }
 
         .wave {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            border-radius: 43%;
+            width: 220%;
+            height: 220%;
+            top: -60%;
+            left: -60%;
+            border-radius: 40%;
             animation: waveAnimation 25s linear infinite;
-            
-            /* 60 FPS İÇİN GPU TETİKLEYİCİLER */
             will-change: transform;
             transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
         }
 
+        /* 1. Dalga: Gemini Mavisi */
         .wave.one {
-            background: radial-gradient(circle, rgba(0, 255, 255, 0.08) 0%, transparent 60%);
-            animation-duration: 20s;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.09) 0%, transparent 65%);
+            animation-duration: 22s;
         }
 
+        /* 2. Dalga: Gemini Moru */
         .wave.two {
-            background: radial-gradient(circle, rgba(157, 0, 255, 0.06) 0%, transparent 60%);
-            animation-duration: 30s;
+            background: radial-gradient(circle, rgba(157, 0, 255, 0.07) 0%, transparent 65%);
+            animation-duration: 28s;
             animation-direction: reverse;
         }
+
+        /* 3. Dalga: Gemini Pembe/Indigo Işıltısı (Daha derin bir hava katması için eklendi) */
+        .wave.three {
+            background: radial-gradient(circle, rgba(255, 0, 127, 0.05) 0%, transparent 60%);
+            animation-duration: 35s;
+            top: -40%;
+            left: -40%;
+        }
         
-        /* 3D Render destekli animasyon */
         @keyframes waveAnimation {
             0% { transform: translate3d(0,0,0) rotate(0deg); }
             100% { transform: translate3d(0,0,0) rotate(360deg); }
@@ -72,20 +79,18 @@
         
         /* Container */
         .container {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px); /* Aynamsı etkiyi artırmak için blur yükseltildi */
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 25px;
             padding: 45px 35px;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
-            
-            /* Akıcı kart açılışı için */
             will-change: transform, opacity;
             transform: translate3d(0, 0, 0);
         }
@@ -103,15 +108,15 @@
             margin: 0 auto 20px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(0, 255, 255, 0.4);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+            border: 3px solid rgba(0, 242, 254, 0.4);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
             will-change: transform;
         }
         
         .profile-img:hover {
             transform: scale(1.05) translate3d(0, 0, 0);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
         }
         
         /* İsim */
@@ -119,8 +124,8 @@
             font-size: 2.8em;
             margin-bottom: 15px;
             font-weight: 600;
-            color: #00ffff;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+            color: #00f2fe; /* İsme Gemini tonu verildi */
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
         }
         
         /* Bio text */
@@ -134,7 +139,7 @@
 
         /* Daktilo imleci */
         .cursor {
-            color: #00ffff;
+            color: #00f2fe;
             animation: blink 0.7s infinite;
             margin-left: 2px;
             will-change: opacity;
@@ -158,29 +163,27 @@
             display: inline-flex;
             align-items: center;
             padding: 14px 26px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.2), 0 4px 15px rgba(0, 0, 0, 0.2);
-            
-            /* 60 FPS Buton İvmesi */
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 4px 15px rgba(0, 0, 0, 0.2);
             will-change: transform;
             transform: translate3d(0, 0, 0);
         }
         
         /* iOS Premium Hover Durumu */
         .social-links a:hover {
-            color: #00ffff;
-            border-color: rgba(0, 255, 255, 0.5);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(0, 255, 255, 0.05) 100%);
+            color: #00f2fe;
+            border-color: rgba(0, 242, 254, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 242, 254, 0.04) 100%);
             transform: scale(1.04) translate3d(0, -2px, 0);
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 10px 25px rgba(0, 255, 255, 0.25);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 10px 25px rgba(0, 242, 254, 0.25);
         }
         
         .social-links i {
@@ -202,6 +205,7 @@
     <div class="wave-bg">
         <div class="wave one"></div>
         <div class="wave two"></div>
+        <div class="wave three"></div>
     </div>
 
     <div class="container">
@@ -209,7 +213,7 @@
         <h1>SERDAR</h1>
         
         <p id="bioText">
-            | Software Developer | <span id="dynamicText" style="color: #00ffff; font-weight: 600;"></span><span class="cursor">|</span>
+            | Software Developer | <span id="dynamicText" style="color: #00f2fe; font-weight: 600;"></span><span class="cursor">|</span>
         </p>
 
         <div class="social-links">
