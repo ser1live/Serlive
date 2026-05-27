@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #020205; /* Tam Gemini koyuluğu */
+            background-color: #04040d; /* Gemini koyu tema rengi */
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* GERÇEK GEMINI AKIŞKAN ARKA PLANI */
+        /* 🌌 GEMINI NOKTALI VE AKIŞKAN ARKA PLANI */
         .gemini-bg {
             position: absolute;
             top: 0;
@@ -34,78 +34,76 @@
             width: 100%;
             height: 100%;
             z-index: -1;
+            background: #04040d;
             overflow: hidden;
-            background: radial-gradient(circle at 50% 50%, #08081a 0%, #020205 100%);
         }
 
-        /* Dumanlı yapay zeka ışık katmanları */
-        .glow-orb {
+        /* Katman 1: Arkadaki hareketli renkli aydınlatma bulutları */
+        .gemini-glows {
             position: absolute;
-            border-radius: 50%;
-            mix-blend-mode: screen;
-            filter: blur(80px); /* Renkleri duman gibi birbirine yediren sihirli kod */
-            will-change: transform, opacity;
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+            filter: blur(60px);
+            opacity: 0.6;
+            will-change: transform;
+            transform: translate3d(0,0,0);
         }
 
-        /* Gemini Mavisi - Sol Üstte Yavaşça Salınır */
-        .orb-1 {
-            width: 350px;
-            height: 350px;
-            background: rgba(0, 218, 255, 0.25);
-            top: -10%;
-            left: -10%;
-            animation: floatOrb1 15s ease-in-out infinite alternate;
-        }
-
-        /* Gemini Moru - Sağ Altta Yavaşça Salınır */
-        .orb-2 {
-            width: 400px;
-            height: 400px;
-            background: rgba(157, 0, 255, 0.2);
-            bottom: -15%;
-            right: -10%;
-            animation: floatOrb2 18s ease-in-out infinite alternate;
-        }
-
-        /* Gemini Pembe/Eflatun Işıltısı - Tam Ortada Hafifçe Yanıp Söner */
-        .orb-3 {
+        .glow-blue {
+            position: absolute;
             width: 300px;
             height: 300px;
-            background: rgba(255, 0, 128, 0.15);
-            top: 30%;
-            left: 25%;
-            animation: floatOrb3 12s ease-in-out infinite alternate;
+            background: #00f2fe;
+            top: -10%;
+            left: -10%;
+            border-radius: 50%;
+            animation: floatGlow 12s ease-in-out infinite alternate;
         }
 
-        /* Akışkan 60 FPS Hareket Animasyonları */
-        @keyframes floatOrb1 {
-            0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.8; }
-            100% { transform: translate3d(50px, 40px, 0) scale(1.2); opacity: 0.5; }
+        .glow-purple {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: #9d00ff;
+            bottom: -10%;
+            right: -5%;
+            border-radius: 50%;
+            animation: floatGlow 16s ease-in-out infinite alternate-reverse;
         }
 
-        @keyframes floatOrb2 {
-            0% { transform: translate3d(0, 0, 0) scale(1.1); opacity: 0.4; }
-            100% { transform: translate3d(-60px, -30px, 0) scale(0.9); opacity: 0.7; }
+        @keyframes floatGlow {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            100% { transform: translate3d(40px, 40px, 0) scale(1.2); }
         }
 
-        @keyframes floatOrb3 {
-            0% { transform: translate3d(0, 0, 0) scale(0.9); opacity: 0.6; }
-            100% { transform: translate3d(-20px, 50px, 0) scale(1.1); opacity: 0.4; }
+        /* Katman 2: Gemini'ın imza NOKTA DESENİ (CSS Radials ile) */
+        .gemini-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 12px aralıklarla dizilen pürüzsüz mini noktacıklar */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
+            background-size: 12px 12px;
+            /* Arkadaki mor-mavi renklerin noktaların içinden parlamasını sağlar */
+            mix-blend-mode: overlay; 
+            pointer-events: none;
         }
-        
-        /* Container (Aynalı Cam Kart) */
+
+        /* Container (Geliştirilmiş iOS Aynalı Cam Kart) */
         .container {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px); /* Arkadaki dumanlı fonu pürüzsüz süzer */
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 25px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
             padding: 45px 35px;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 
+                        inset 0 1px 0px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.03);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
@@ -146,7 +144,7 @@
             text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
         }
         
-        /* Bio text (Kayma yapmayan yeni esnek yapı) */
+        /* Bio text */
         #bioText {
             font-size: 1.05em;
             margin-bottom: 30px;
@@ -225,9 +223,10 @@
 <body>
 
     <div class="gemini-bg">
-        <div class="glow-orb orb-1"></div>
-        <div class="glow-orb orb-2"></div>
-        <div class="glow-orb orb-3"></div>
+        <div class="gemini-glows">
+            <div class="glow-blue"></div>
+            <div class="glow-purple"></div>
+        </div>
     </div>
 
     <div class="container">
