@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #030a16; /* Gece yarısı mavisi altyapısı */
+            background-color: #020612;
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌌 BÜYÜLÜ GECE MANZARASI ARKA PLANI */
+        /* 🌌 GÜNCELLENEN GECE ARKA PLANI */
         .night-bg {
             position: absolute;
             top: 0;
@@ -34,88 +34,89 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            /* Görseldeki gibi derin lacivertten, ağaçların altındaki gizemli siyaha geçiş */
-            background: linear-gradient(to bottom, #030b1e 0%, #051622 40%, #02070d 100%);
+            background: linear-gradient(to bottom, #020714 0%, #051329 50%, #010308 100%);
             overflow: hidden;
         }
 
         /* 🌕 PARLAYAN DOLUNAY */
         .moon {
             position: absolute;
-            top: 12%;
-            left: 15%;
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e1f5fe 50%, #b3e5fc 100%);
+            top: 10%;
+            left: 12%;
+            width: 85px;
+            height: 85px;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e1f5fe 60%, #b3e5fc 100%);
             border-radius: 50%;
-            /* Görseldeki o mehtap parlaması */
-            box-shadow: 0 0 40px rgba(0, 229, 255, 0.4), 
-                        0 0 80px rgba(0, 218, 255, 0.2);
+            box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), 0 0 80px rgba(0, 218, 255, 0.15);
             opacity: 0.85;
             animation: moonPulse 6s ease-in-out infinite alternate;
         }
 
         @keyframes moonPulse {
             0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.03); opacity: 0.95; }
+            100% { transform: scale(1.04); opacity: 0.95; }
         }
 
-        /* ✨ PARILDAYAN YILDIZLAR */
-        .stars {
+        /* ⭐ GERÇEK PARLAYAN YILDIZLAR (Instagram'da %100 Görünür) */
+        .star {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-            background-size: 250px 250px, 150px 150px, 300px 300px;
-            background-position: 0 0, 40px 60px, 130px 270px;
-            opacity: 0.4;
+            background-color: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #ffffff, 0 0 15px #ffffff;
+            animation: twinkle 3s infinite ease-in-out;
+            will-change: opacity;
         }
 
-        /* 🪰 UÇUŞAN ATEŞ BÖCEKLERİ (Donanım Hızlandırmalı 60 FPS) */
+        /* Farklı konumlarda ve boyutlarda gerçek parlayan yıldızlar */
+        .st-1 { width: 3px; height: 3px; top: 15%; right: 20%; animation-delay: 0s; }
+        .st-2 { width: 2px; height: 2px; top: 25%; right: 45%; animation-delay: 0.5s; }
+        .st-3 { width: 4px; height: 4px; top: 35%; left: 25%; animation-delay: 1s; box-shadow: 0 0 10px #b3e5fc; }
+        .st-4 { width: 2px; height: 2px; top: 8%; right: 10%; animation-delay: 1.5s; }
+        .st-5 { width: 3px; height: 3px; top: 45%; right: 15%; animation-delay: 2s; }
+        .st-6 { width: 2px; height: 2px; top: 60%; left: 8%; animation-delay: 0.7s; }
+
+        /* Yıldızların Göz Kırpma Animasyonu */
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 🪰 UÇUŞAN ATEŞ BÖCEKLERİ */
         .firefly {
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle, #00ffcc 0%, rgba(0,255,150,0) 70%);
-            box-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0,255,200,0.6);
+            box-shadow: 0 0 12px #00ffcc, 0 0 24px rgba(0,255,200,0.6);
             will-change: transform, opacity;
             transform: translate3d(0,0,0);
-            backface-visibility: hidden;
         }
 
-        /* Ateş Böceği 1 */
-        .ff-1 { width: 6px; height: 6px; top: 70%; left: 10%; animation: flyAround1 14s infinite linear; }
-        /* Ateş Böceği 2 */
-        .ff-2 { width: 8px; height: 8px; top: 40%; right: 15%; animation: flyAround2 18s infinite linear; background: #64ffda; box-shadow: 0 0 12px #64ffda; }
-        /* Ateş Böceği 3 */
-        .ff-3 { width: 5px; height: 5px; bottom: 15%; left: 30%; animation: flyAround3 12s infinite linear; }
-        /* Ateş Böceği 4 */
-        .ff-4 { width: 7px; height: 7px; top: 80%; right: 25%; animation: flyAround1 16s infinite linear reverse; }
+        .ff-1 { width: 7px; height: 7px; top: 75%; left: 15%; animation: flyAround1 15s infinite linear; }
+        .ff-2 { width: 9px; height: 9px; top: 50%; right: 20%; animation: flyAround2 19s infinite linear; background: #64ffda; box-shadow: 0 0 14px #64ffda; }
+        .ff-3 { width: 6px; height: 6px; bottom: 20%; left: 35%; animation: flyAround3 13s infinite linear; }
+        .ff-4 { width: 8px; height: 8px; top: 85%; right: 30%; animation: flyAround1 17s infinite linear reverse; }
 
-        /* Doğal ve akışkan uçuş rotaları */
         @keyframes flyAround1 {
-            0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.2; }
-            30% { transform: translate3d(40px, -60px, 0) scale(1.2); opacity: 0.8; }
-            70% { transform: translate3d(-20px, -120px, 0) scale(0.8); opacity: 0.4; }
-            100% { transform: translate3d(10px, -200px, 0) scale(1); opacity: 0; }
+            0% { transform: translate3d(0, 0, 0); opacity: 0.1; }
+            30% { transform: translate3d(45px, -70px, 0); opacity: 0.8; }
+            70% { transform: translate3d(-25px, -140px, 0); opacity: 0.4; }
+            100% { transform: translate3d(15px, -220px, 0); opacity: 0; }
         }
 
         @keyframes flyAround2 {
-            0% { transform: translate3d(0, 0, 0) scale(0.8); opacity: 0; }
-            40% { transform: translate3d(-50px, -50px, 0) scale(1.1); opacity: 0.9; }
-            80% { transform: translate3d(30px, -100px, 0) scale(0.7); opacity: 0.3; }
-            100% { transform: translate3d(-10px, -160px, 0) scale(0.9); opacity: 0; }
+            0% { transform: translate3d(0, 0, 0); opacity: 0; }
+            40% { transform: translate3d(-55px, -60px, 0); opacity: 0.9; }
+            80% { transform: translate3d(35px, -120px, 0); opacity: 0.3; }
+            100% { transform: translate3d(-15px, -190px, 0); opacity: 0; }
         }
 
         @keyframes flyAround3 {
-            0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.5; }
-            50% { transform: translate3d(60px, -40px, 0) scale(0.7); opacity: 0.2; }
-            100% { transform: translate3d(20px, -90px, 0) scale(1.2); opacity: 0.9; }
+            0% { transform: translate3d(0, 0, 0); opacity: 0.6; }
+            50% { transform: translate3d(65px, -50px, 0); opacity: 0.2; }
+            100% { transform: translate3d(25px, -110px, 0); opacity: 0.9; }
         }
 
-        /* Container (Premium Aynalı Cam Kart) */
+        /* Container (Aynalı Cam Kart) */
         .container {
             background: rgba(255, 255, 255, 0.01);
             backdrop-filter: blur(25px);
@@ -124,14 +125,11 @@
             padding: 45px 35px;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.03);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
-            will-change: transform, opacity;
-            transform: translate3d(0, 0, 0);
         }
         
         @keyframes fadeIn {
@@ -139,7 +137,6 @@
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
-        /* Profil resmi */
         .profile-img {
             width: 140px;
             height: 140px;
@@ -147,27 +144,24 @@
             margin: 0 auto 20px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(100, 255, 218, 0.4); /* Gece temasına uygun neon yeşil/mavi halka */
+            border: 3px solid rgba(100, 255, 218, 0.4);
             box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
-            will-change: transform;
         }
         
         .profile-img:hover {
-            transform: scale(1.05) translate3d(0, 0, 0);
+            transform: scale(1.05);
             box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
         }
         
-        /* İsim */
         h1 {
             font-size: 2.8em;
             margin-bottom: 15px;
             font-weight: 600;
-            color: #64ffda; /* İsme büyülü gece yeşili/mavi tonu verildi */
+            color: #64ffda;
             text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
         }
         
-        /* Bio text */
         #bioText {
             font-size: 1.05em;
             margin-bottom: 30px;
@@ -181,11 +175,9 @@
             width: 100%;
         }
 
-        /* Daktilo imleci */
         .cursor {
             color: #64ffda;
             animation: blink 0.7s infinite;
-            will-change: opacity;
         }
 
         @keyframes blink {
@@ -193,7 +185,6 @@
             50% { opacity: 0; }
         }
         
-        /* Social links */
         .social-links {
             display: flex;
             justify-content: center;
@@ -201,7 +192,6 @@
             gap: 12px;
         }
         
-        /* iOS Cam Düğme Tasarımı */
         .social-links a {
             display: inline-flex;
             align-items: center;
@@ -216,11 +206,8 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.2);
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
         }
         
-        /* Hover Durumu */
         .social-links a:hover {
             color: #64ffda;
             border-color: rgba(100, 255, 218, 0.4);
@@ -234,7 +221,6 @@
             margin-right: 10px;
         }
         
-        /* Responsive */
         @media (max-width: 480px) {
             .container { padding: 35px 25px; }
             h1 { font-size: 2.2em; }
@@ -247,7 +233,14 @@
 
     <div class="night-bg">
         <div class="moon"></div>
-        <div class="stars"></div>
+        
+        <div class="star st-1"></div>
+        <div class="star st-2"></div>
+        <div class="star st-3"></div>
+        <div class="star st-4"></div>
+        <div class="star st-5"></div>
+        <div class="star st-6"></div>
+
         <div class="firefly ff-1"></div>
         <div class="firefly ff-2"></div>
         <div class="firefly ff-3"></div>
