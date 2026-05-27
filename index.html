@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #020612;
+            background-color: #020208; /* Gemini derin siyah arka planı */
             color: white;
             display: flex;
             justify-content: center;
@@ -26,110 +26,78 @@
             position: relative;
         }
         
-        /* 🌌 GÜNCELLENEN GECE ARKA PLANI */
-        .night-bg {
+        /* 🌌 GERÇEK HAREKETLİ GEMINI NOKTA FONU */
+        .gemini-bg {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: linear-gradient(to bottom, #020714 0%, #051329 50%, #010308 100%);
+            background: linear-gradient(180deg, #020208 0%, #050515 100%);
             overflow: hidden;
         }
 
-        /* 🌕 PARLAYAN DOLUNAY */
-        .moon {
+        /* 1. Katman: Mavi Dalgalı Nokta Matrisi */
+        .dot-wave-blue {
             position: absolute;
-            top: 10%;
-            left: 12%;
-            width: 85px;
-            height: 85px;
-            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e1f5fe 60%, #b3e5fc 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 40px rgba(0, 229, 255, 0.35), 0 0 80px rgba(0, 218, 255, 0.15);
-            opacity: 0.85;
-            animation: moonPulse 6s ease-in-out infinite alternate;
-        }
-
-        @keyframes moonPulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.04); opacity: 0.95; }
-        }
-
-        /* ⭐ GERÇEK PARLAYAN YILDIZLAR (Instagram'da %100 Görünür) */
-        .star {
-            position: absolute;
-            background-color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #ffffff, 0 0 15px #ffffff;
-            animation: twinkle 3s infinite ease-in-out;
-            will-change: opacity;
-        }
-
-        /* Farklı konumlarda ve boyutlarda gerçek parlayan yıldızlar */
-        .st-1 { width: 3px; height: 3px; top: 15%; right: 20%; animation-delay: 0s; }
-        .st-2 { width: 2px; height: 2px; top: 25%; right: 45%; animation-delay: 0.5s; }
-        .st-3 { width: 4px; height: 4px; top: 35%; left: 25%; animation-delay: 1s; box-shadow: 0 0 10px #b3e5fc; }
-        .st-4 { width: 2px; height: 2px; top: 8%; right: 10%; animation-delay: 1.5s; }
-        .st-5 { width: 3px; height: 3px; top: 45%; right: 15%; animation-delay: 2s; }
-        .st-6 { width: 2px; height: 2px; top: 60%; left: 8%; animation-delay: 0.7s; }
-
-        /* Yıldızların Göz Kırpma Animasyonu */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; transform: scale(0.8); }
-            50% { opacity: 1; transform: scale(1.2); }
-        }
-
-        /* 🪰 UÇUŞAN ATEŞ BÖCEKLERİ */
-        .firefly {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, #00ffcc 0%, rgba(0,255,150,0) 70%);
-            box-shadow: 0 0 12px #00ffcc, 0 0 24px rgba(0,255,200,0.6);
-            will-change: transform, opacity;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            /* Noktalar büyütüldü ve Gemini mavisi rengi verildi */
+            background-image: radial-gradient(rgba(0, 242, 254, 0.25) 2.5px, transparent 2.5px);
+            background-size: 16px 16px;
+            animation: geminiMoveOne 25s ease-in-out infinite alternate;
+            will-change: transform;
             transform: translate3d(0,0,0);
         }
 
-        .ff-1 { width: 7px; height: 7px; top: 75%; left: 15%; animation: flyAround1 15s infinite linear; }
-        .ff-2 { width: 9px; height: 9px; top: 50%; right: 20%; animation: flyAround2 19s infinite linear; background: #64ffda; box-shadow: 0 0 14px #64ffda; }
-        .ff-3 { width: 6px; height: 6px; bottom: 20%; left: 35%; animation: flyAround3 13s infinite linear; }
-        .ff-4 { width: 8px; height: 8px; top: 85%; right: 30%; animation: flyAround1 17s infinite linear reverse; }
-
-        @keyframes flyAround1 {
-            0% { transform: translate3d(0, 0, 0); opacity: 0.1; }
-            30% { transform: translate3d(45px, -70px, 0); opacity: 0.8; }
-            70% { transform: translate3d(-25px, -140px, 0); opacity: 0.4; }
-            100% { transform: translate3d(15px, -220px, 0); opacity: 0; }
+        /* 2. Katman: Mor/Pembe Dalgalı Nokta Matrisi (Üst üste binerek o derin yapay zeka efektini yaratır) */
+        .dot-wave-purple {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -40%;
+            left: -40%;
+            /* İkinci katman mor/pembe neon tonlarında parlar */
+            background-image: radial-gradient(rgba(157, 0, 255, 0.2) 2.5px, transparent 2.5px);
+            background-size: 18px 18px;
+            animation: geminiMoveTwo 30s ease-in-out infinite alternate;
+            will-change: transform;
+            transform: translate3d(0,0,0);
         }
 
-        @keyframes flyAround2 {
-            0% { transform: translate3d(0, 0, 0); opacity: 0; }
-            40% { transform: translate3d(-55px, -60px, 0); opacity: 0.9; }
-            80% { transform: translate3d(35px, -120px, 0); opacity: 0.3; }
-            100% { transform: translate3d(-15px, -190px, 0); opacity: 0; }
+        /* Instagram ve tüm mobil cihazlarda yağ gibi akan 3D nokta dalgalanma animasyonları */
+        @keyframes geminiMoveOne {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate3d(30px, 40px, 0) scale(1.05); }
+            100% { transform: translate3d(-20px, 20px, 0) rotate(5deg) scale(0.95); }
         }
 
-        @keyframes flyAround3 {
-            0% { transform: translate3d(0, 0, 0); opacity: 0.6; }
-            50% { transform: translate3d(65px, -50px, 0); opacity: 0.2; }
-            100% { transform: translate3d(25px, -110px, 0); opacity: 0.9; }
+        @keyframes geminiMoveTwo {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.95); }
+            50% { transform: translate3d(-40px, -20px, 0) scale(1.05); }
+            100% { transform: translate3d(20px, -40px, 0) rotate(-8deg) scale(1); }
         }
-
-        /* Container (Aynalı Cam Kart) */
+        
+        /* Container (Geliştirilmiş Cam Kart) */
         .container {
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 45px 35px;
             max-width: 420px;
             width: 90%;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 
+                        inset 0 1px 0px rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.03);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
+            will-change: transform, opacity;
+            transform: translate3d(0, 0, 0);
         }
         
         @keyframes fadeIn {
@@ -137,6 +105,7 @@
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
+        /* Profil resmi */
         .profile-img {
             width: 140px;
             height: 140px;
@@ -144,24 +113,27 @@
             margin: 0 auto 20px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(100, 255, 218, 0.4);
-            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            border: 3px solid rgba(0, 242, 254, 0.4);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            will-change: transform;
         }
         
         .profile-img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(100, 255, 218, 0.5);
+            transform: scale(1.05) translate3d(0, 0, 0);
+            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
         }
         
+        /* İsim */
         h1 {
             font-size: 2.8em;
             margin-bottom: 15px;
             font-weight: 600;
-            color: #64ffda;
-            text-shadow: 0 0 20px rgba(100, 255, 218, 0.3);
+            color: #00f2fe;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
         }
         
+        /* Bio text */
         #bioText {
             font-size: 1.05em;
             margin-bottom: 30px;
@@ -175,9 +147,11 @@
             width: 100%;
         }
 
+        /* Daktilo imleci */
         .cursor {
-            color: #64ffda;
+            color: #00f2fe;
             animation: blink 0.7s infinite;
+            will-change: opacity;
         }
 
         @keyframes blink {
@@ -185,6 +159,7 @@
             50% { opacity: 0; }
         }
         
+        /* Social links */
         .social-links {
             display: flex;
             justify-content: center;
@@ -192,28 +167,32 @@
             gap: 12px;
         }
         
+        /* iOS Aynalı Cam Düğme Tasarımı */
         .social-links a {
             display: inline-flex;
             align-items: center;
             padding: 14px 26px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.9);
             text-decoration: none;
             border-radius: 50px;
             font-weight: 400;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 4px 15px rgba(0, 0, 0, 0.2);
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
         
+        /* iOS Premium Hover Durumu */
         .social-links a:hover {
-            color: #64ffda;
-            border-color: rgba(100, 255, 218, 0.4);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(100, 255, 218, 0.02) 100%);
+            color: #00f2fe;
+            border-color: rgba(0, 242, 254, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 242, 254, 0.04) 100%);
             transform: scale(1.04) translate3d(0, -2px, 0);
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2), 0 10px 25px rgba(100, 255, 218, 0.15);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 10px 25px rgba(0, 242, 254, 0.25);
         }
         
         .social-links i {
@@ -221,6 +200,7 @@
             margin-right: 10px;
         }
         
+        /* Responsive */
         @media (max-width: 480px) {
             .container { padding: 35px 25px; }
             h1 { font-size: 2.2em; }
@@ -231,20 +211,9 @@
 </head>
 <body>
 
-    <div class="night-bg">
-        <div class="moon"></div>
-        
-        <div class="star st-1"></div>
-        <div class="star st-2"></div>
-        <div class="star st-3"></div>
-        <div class="star st-4"></div>
-        <div class="star st-5"></div>
-        <div class="star st-6"></div>
-
-        <div class="firefly ff-1"></div>
-        <div class="firefly ff-2"></div>
-        <div class="firefly ff-3"></div>
-        <div class="firefly ff-4"></div>
+    <div class="gemini-bg">
+        <div class="dot-wave-blue"></div>
+        <div class="dot-wave-purple"></div>
     </div>
 
     <div class="container">
@@ -253,7 +222,7 @@
         
         <p id="bioText">
             <span>| Software Developer |</span>
-            <span id="dynamicText" style="color: #64ffda; font-weight: 600;"></span>
+            <span id="dynamicText" style="color: #00f2fe; font-weight: 600;"></span>
             <span class="cursor">|</span>
         </p>
 
