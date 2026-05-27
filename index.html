@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #03030a; /* Gemini Koyu Altyapısı */
+            background-color: #020208; /* Gemini derin siyah arka planı */
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* INSTAGRAM UYUMLU DINAMIK GEMINI ARKA PLANI */
+        /* 🌌 GERÇEK HAREKETLİ GEMINI NOKTA FONU */
         .gemini-bg {
             position: absolute;
             top: 0;
@@ -34,63 +34,58 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: #03030a;
+            background: linear-gradient(180deg, #020208 0%, #050515 100%);
             overflow: hidden;
         }
 
-        /* 1. Dalga: Gemini Mavisi - Kendi etrafında akışkan döner */
-        .wave-one {
-            position: absolute;
-            width: 180%;
-            height: 180%;
-            top: -40%;
-            left: -40%;
-            border-radius: 42%;
-            background: radial-gradient(circle, rgba(0, 242, 254, 0.12) 0%, transparent 60%);
-            animation: rotateWave 22s linear infinite;
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
-        }
-
-        /* 2. Dalga: Gemini Moru - Ters yöne akarak derinlik verir */
-        .wave-two {
+        /* 1. Katman: Mavi Dalgalı Nokta Matrisi */
+        .dot-wave-blue {
             position: absolute;
             width: 200%;
             height: 200%;
-            bottom: -50%;
-            right: -50%;
-            border-radius: 44%;
-            background: radial-gradient(circle, rgba(157, 0, 255, 0.09) 0%, transparent 60%);
-            animation: rotateWave 28s linear infinite reverse;
+            top: -50%;
+            left: -50%;
+            /* Noktalar büyütüldü ve Gemini mavisi rengi verildi */
+            background-image: radial-gradient(rgba(0, 242, 254, 0.25) 2.5px, transparent 2.5px);
+            background-size: 16px 16px;
+            animation: geminiMoveOne 25s ease-in-out infinite alternate;
             will-change: transform;
-            transform: translate3d(0, 0, 0);
+            transform: translate3d(0,0,0);
         }
 
-        /* Instagram'da %100 çalışan döner dalga animasyonu */
-        @keyframes rotateWave {
-            0% { transform: translate3d(0,0,0) rotate(0deg); }
-            100% { transform: translate3d(0,0,0) rotate(360deg); }
-        }
-
-        /* Üst Katman: Instagram dostu pürüzsüz Nokta Matrisi */
-        .dot-matrix {
+        /* 2. Katman: Mor/Pembe Dalgalı Nokta Matrisi (Üst üste binerek o derin yapay zeka efektini yaratır) */
+        .dot-wave-purple {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Saydamlık ayarları Instagram tarayıcısına göre optimize edildi */
-            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
-            background-size: 11px 11px;
-            z-index: 0;
-            pointer-events: none;
+            width: 200%;
+            height: 200%;
+            top: -40%;
+            left: -40%;
+            /* İkinci katman mor/pembe neon tonlarında parlar */
+            background-image: radial-gradient(rgba(157, 0, 255, 0.2) 2.5px, transparent 2.5px);
+            background-size: 18px 18px;
+            animation: geminiMoveTwo 30s ease-in-out infinite alternate;
+            will-change: transform;
+            transform: translate3d(0,0,0);
+        }
+
+        /* Instagram ve tüm mobil cihazlarda yağ gibi akan 3D nokta dalgalanma animasyonları */
+        @keyframes geminiMoveOne {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate3d(30px, 40px, 0) scale(1.05); }
+            100% { transform: translate3d(-20px, 20px, 0) rotate(5deg) scale(0.95); }
+        }
+
+        @keyframes geminiMoveTwo {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.95); }
+            50% { transform: translate3d(-40px, -20px, 0) scale(1.05); }
+            100% { transform: translate3d(20px, -40px, 0) rotate(-8deg) scale(1); }
         }
         
-        /* Container (Aynalı Cam Kart) */
+        /* Container (Geliştirilmiş Cam Kart) */
         .container {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border-radius: 30px;
             padding: 45px 35px;
             max-width: 420px;
@@ -217,9 +212,9 @@
 <body>
 
     <div class="gemini-bg">
-        <div class="wave-one"></div>
-        <div class="wave-two"></div>
-        <div class="dot-matrix"></div> </div>
+        <div class="dot-wave-blue"></div>
+        <div class="dot-wave-purple"></div>
+    </div>
 
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
