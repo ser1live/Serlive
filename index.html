@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #04040d; /* Gemini koyu tema rengi */
+            background-color: #03030a; /* Gemini Koyu Altyapısı */
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌌 GEMINI NOKTALI VE AKIŞKAN ARKA PLANI */
+        /* INSTAGRAM UYUMLU DINAMIK GEMINI ARKA PLANI */
         .gemini-bg {
             position: absolute;
             top: 0;
@@ -34,65 +34,59 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: #04040d;
+            background: #03030a;
             overflow: hidden;
         }
 
-        /* Katman 1: Arkadaki hareketli renkli aydınlatma bulutları */
-        .gemini-glows {
+        /* 1. Dalga: Gemini Mavisi - Kendi etrafında akışkan döner */
+        .wave-one {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            filter: blur(60px);
-            opacity: 0.6;
+            width: 180%;
+            height: 180%;
+            top: -40%;
+            left: -40%;
+            border-radius: 42%;
+            background: radial-gradient(circle, rgba(0, 242, 254, 0.12) 0%, transparent 60%);
+            animation: rotateWave 22s linear infinite;
             will-change: transform;
-            transform: translate3d(0,0,0);
+            transform: translate3d(0, 0, 0);
         }
 
-        .glow-blue {
+        /* 2. Dalga: Gemini Moru - Ters yöne akarak derinlik verir */
+        .wave-two {
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: #00f2fe;
-            top: -10%;
-            left: -10%;
-            border-radius: 50%;
-            animation: floatGlow 12s ease-in-out infinite alternate;
+            width: 200%;
+            height: 200%;
+            bottom: -50%;
+            right: -50%;
+            border-radius: 44%;
+            background: radial-gradient(circle, rgba(157, 0, 255, 0.09) 0%, transparent 60%);
+            animation: rotateWave 28s linear infinite reverse;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
 
-        .glow-purple {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: #9d00ff;
-            bottom: -10%;
-            right: -5%;
-            border-radius: 50%;
-            animation: floatGlow 16s ease-in-out infinite alternate-reverse;
+        /* Instagram'da %100 çalışan döner dalga animasyonu */
+        @keyframes rotateWave {
+            0% { transform: translate3d(0,0,0) rotate(0deg); }
+            100% { transform: translate3d(0,0,0) rotate(360deg); }
         }
 
-        @keyframes floatGlow {
-            0% { transform: translate3d(0, 0, 0) scale(1); }
-            100% { transform: translate3d(40px, 40px, 0) scale(1.2); }
-        }
-
-        /* Katman 2: Gemini'ın imza NOKTA DESENİ (CSS Radials ile) */
-        .gemini-bg::after {
-            content: '';
+        /* Üst Katman: Instagram dostu pürüzsüz Nokta Matrisi */
+        .dot-matrix {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            /* 12px aralıklarla dizilen pürüzsüz mini noktacıklar */
-            background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1.5px, transparent 1.5px);
-            background-size: 12px 12px;
-            /* Arkadaki mor-mavi renklerin noktaların içinden parlamasını sağlar */
-            mix-blend-mode: overlay; 
+            /* Saydamlık ayarları Instagram tarayıcısına göre optimize edildi */
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px);
+            background-size: 11px 11px;
+            z-index: 0;
             pointer-events: none;
         }
-
-        /* Container (Geliştirilmiş iOS Aynalı Cam Kart) */
+        
+        /* Container (Aynalı Cam Kart) */
         .container {
             background: rgba(255, 255, 255, 0.02);
             backdrop-filter: blur(20px);
@@ -223,11 +217,9 @@
 <body>
 
     <div class="gemini-bg">
-        <div class="gemini-glows">
-            <div class="glow-blue"></div>
-            <div class="glow-purple"></div>
-        </div>
-    </div>
+        <div class="wave-one"></div>
+        <div class="wave-two"></div>
+        <div class="dot-matrix"></div> </div>
 
     <div class="container">
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
