@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #020208; /* Gemini derin siyah arka planı */
+            background-color: #020208;
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌌 GERÇEK HAREKETLİ GEMINI NOKTA FONU */
+        /* 🌌 DALGALI NOKTA ARKA PLANI */
         .gemini-bg {
             position: absolute;
             top: 0;
@@ -38,61 +38,60 @@
             overflow: hidden;
         }
 
-        /* 1. Katman: Mavi Dalgalı Nokta Matrisi */
+        /* 1. Katman: Mavi Kıvrımlı Dalga Matrisi */
         .dot-wave-blue {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            /* Noktalar büyütüldü ve Gemini mavisi rengi verildi */
-            background-image: radial-gradient(rgba(0, 242, 254, 0.25) 2.5px, transparent 2.5px);
-            background-size: 16px 16px;
-            animation: geminiMoveOne 25s ease-in-out infinite alternate;
+            width: 250%;
+            height: 250%;
+            top: -75%;
+            left: -75%;
+            background-image: radial-gradient(rgba(0, 242, 254, 0.28) 2px, transparent 2px);
+            background-size: 18px 18px;
+            animation: waveMotionOne 30s ease-in-out infinite alternate;
             will-change: transform;
             transform: translate3d(0,0,0);
         }
 
-        /* 2. Katman: Mor/Pembe Dalgalı Nokta Matrisi (Üst üste binerek o derin yapay zeka efektini yaratır) */
+        /* 2. Katman: Mor Derinlik Matrisi */
         .dot-wave-purple {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -40%;
-            left: -40%;
-            /* İkinci katman mor/pembe neon tonlarında parlar */
-            background-image: radial-gradient(rgba(157, 0, 255, 0.2) 2.5px, transparent 2.5px);
-            background-size: 18px 18px;
-            animation: geminiMoveTwo 30s ease-in-out infinite alternate;
+            width: 250%;
+            height: 250%;
+            top: -65%;
+            left: -65%;
+            background-image: radial-gradient(rgba(157, 0, 255, 0.22) 2px, transparent 2px);
+            background-size: 20px 20px;
+            animation: waveMotionTwo 35s ease-in-out infinite alternate;
             will-change: transform;
             transform: translate3d(0,0,0);
         }
 
-        /* Instagram ve tüm mobil cihazlarda yağ gibi akan 3D nokta dalgalanma animasyonları */
-        @keyframes geminiMoveOne {
-            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-            50% { transform: translate3d(30px, 40px, 0) scale(1.05); }
-            100% { transform: translate3d(-20px, 20px, 0) rotate(5deg) scale(0.95); }
+        /* Görseldeki gibi akışkan, nehir kıvrımı şeklinde dalgalanma animasyonları */
+        @keyframes waveMotionOne {
+            0% { transform: translate3d(0, 0, 0) cubic-bezier(0.45, 0.05, 0.55, 0.95) rotate(0deg) scale(1); }
+            33% { transform: translate3d(50px, 30px, 0) rotate(3deg) scale(1.03); }
+            66% { transform: translate3d(-30px, 60px, 0) rotate(-2deg) scale(0.97); }
+            100% { transform: translate3d(20px, -20px, 0) rotate(4deg) scale(1.02); }
         }
 
-        @keyframes geminiMoveTwo {
-            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.95); }
-            50% { transform: translate3d(-40px, -20px, 0) scale(1.05); }
-            100% { transform: translate3d(20px, -40px, 0) rotate(-8deg) scale(1); }
+        @keyframes waveMotionTwo {
+            0% { transform: translate3d(0, 0, 0) cubic-bezier(0.45, 0.05, 0.55, 0.95) rotate(0deg) scale(0.98); }
+            50% { transform: translate3d(-60px, -40px, 0) rotate(-5deg) scale(1.05); }
+            100% { transform: translate3d(40px, 40px, 0) rotate(3deg) scale(0.95); }
         }
         
-        /* Container (Geliştirilmiş Cam Kart) */
+        /* Premium Cam Kart */
         .container {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 32px;
             padding: 45px 35px;
-            max-width: 420px;
-            width: 90%;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 
-                        inset 0 1px 0px rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            max-width: 400px;
+            width: 92%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.85), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.02);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
@@ -101,57 +100,64 @@
         }
         
         @keyframes fadeIn {
-            from { opacity: 0; transform: translate3d(0, 20px, 0); }
+            from { opacity: 0; transform: translate3d(0, 25px, 0); }
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
-        /* Profil resmi */
+        /* Profil Resmi */
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 125px;
+            height: 125px;
             border-radius: 50%;
-            margin: 0 auto 20px;
+            margin: 0 auto 18px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(0, 242, 254, 0.4);
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+            border: 3px solid rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
             will-change: transform;
         }
         
         .profile-img:hover {
-            transform: scale(1.05) translate3d(0, 0, 0);
-            box-shadow: 0 0 30px rgba(0, 242, 254, 0.5);
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
         }
         
         /* İsim */
         h1 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
+            font-size: 2.5em;
+            margin-bottom: 6px;
             font-weight: 600;
             color: #00f2fe;
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 25px rgba(0, 242, 254, 0.35);
         }
         
-        /* Bio text */
+        /* Sabit Ünvan (Görseldeki Gibi) */
+        .title-tag {
+            font-size: 1.1em;
+            font-weight: 400;
+            color: #ffffff;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Alt Hareketli Yazı Alanı */
         #bioText {
-            font-size: 1.05em;
-            margin-bottom: 30px;
-            opacity: 0.95;
-            line-height: 1.6;
-            color: #e0e0e0;
-            display: inline-flex;
+            font-size: 0.9em;
+            margin-bottom: 32px;
+            min-height: 22px;
+            color: #b0b0b5;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            width: 100%;
+            gap: 4px;
         }
 
-        /* Daktilo imleci */
         .cursor {
             color: #00f2fe;
             animation: blink 0.7s infinite;
-            will-change: opacity;
         }
 
         @keyframes blink {
@@ -159,83 +165,122 @@
             50% { opacity: 0; }
         }
         
-        /* Social links */
+        /* Dikey Sosyal Link Listesi */
         .social-links {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
         }
         
-        /* iOS Aynalı Cam Düğme Tasarımı */
+        /* Cam Butonlar */
         .social-links a {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            padding: 14px 26px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: rgba(255, 255, 255, 0.9);
+            justify-content: flex-start;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: 400;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 4px 15px rgba(0, 0, 0, 0.2);
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
+            border-radius: 16px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.2);
         }
-        
-        /* iOS Premium Hover Durumu */
-        .social-links a:hover {
-            color: #00f2fe;
-            border-color: rgba(0, 242, 254, 0.5);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 242, 254, 0.04) 100%);
-            transform: scale(1.04) translate3d(0, -2px, 0);
-            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 10px 25px rgba(0, 242, 254, 0.25);
-        }
-        
+
         .social-links i {
-            font-size: 1.3em;
-            margin-right: 10px;
+            font-size: 1.4em;
+            width: 32px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
+
+        /* Hover Renk Detayları */
+        .social-links a.instagram:hover {
+            color: #fccc63;
+            border-color: rgba(225, 48, 108, 0.4);
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            box-shadow: 0 12px 30px rgba(225, 48, 108, 0.2);
+        }
+
+        .social-links a.tiktok:hover {
+            color: #00f2fe;
+            border-color: rgba(254, 44, 85, 0.4);
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.08) 0%, rgba(0, 242, 254, 0.03) 100%);
+            box-shadow: 0 12px 30px rgba(254, 44, 85, 0.2);
+        }
+
+        .social-links a.telegram:hover {
+            color: #2ea6da;
+            border-color: rgba(46, 166, 218, 0.4);
+            background: linear-gradient(135deg, rgba(46, 166, 218, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            box-shadow: 0 12px 30px rgba(46, 166, 218, 0.2);
         }
         
-        /* Responsive */
+        .social-links a:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .social-links a:hover i {
+            transform: scale(1.15);
+        }
+
+        /* Öne Çıkan Buton İvmesi */
+        .pulse-btn {
+            animation: buttonPulse 2s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.25); }
+            70% { box-shadow: 0 0 0 12px rgba(0, 242, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+        }
+        
+        /* Mobil Uyumluluk */
         @media (max-width: 480px) {
-            .container { padding: 35px 25px; }
-            h1 { font-size: 2.2em; }
-            .profile-img { width: 110px; height: 110px; }
-            #bioText { font-size: 0.95em; }
+            .container { padding: 40px 22px; }
+            h1 { font-size: 2.1em; }
+            .title-tag { font-size: 1rem; }
+            .profile-img { width: 115px; height: 115px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Akışkan dalgalı arka plan katmanları -->
     <div class="gemini-bg">
         <div class="dot-wave-blue"></div>
         <div class="dot-wave-purple"></div>
     </div>
 
     <div class="container">
-        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face';">
+        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
+        
         <h1>SERDAR</h1>
         
-        <p id="bioText">
-            <span>| Software Developer |</span>
-            <span id="dynamicText" style="color: #00f2fe; font-weight: 600;"></span>
+        <!-- Görseldeki gibi net ve temiz sabit ünvan alanı -->
+        <div class="title-tag">| Solo Developer |</div>
+        
+        <!-- Alt dinamik açıklamalar -->
+        <div id="bioText">
+            <span id="dynamicText"></span>
             <span class="cursor">|</span>
-        </p>
+        </div>
 
         <div class="social-links">
-            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer" class="instagram pulse-btn">
                 <i class="fab fa-instagram"></i>
                 <span>Instagram</span>
             </a>
-            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer" class="tiktok">
                 <i class="fab fa-tiktok"></i>
                 <span>TikTok</span>
             </a>
-            <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer" class="telegram">
                 <i class="fab fa-telegram-plane"></i>
                 <span>Telegram</span>
             </a>
@@ -244,7 +289,13 @@
 
     <script>
         const dynamicText = document.getElementById('dynamicText');
-        const words = ["Web Developer 🌐", "Turning ideas into reality 💡", "Focusing on clean code ✨", "Always adapting, always learning 🚀"];
+        // Kelimeler güncellendi
+        const words = [
+            "Web Developer 🌐", 
+            "Turning ideas into reality 💡", 
+            "Focusing on clean code ✨", 
+            "Always adapting, always learning 🚀"
+        ];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -257,13 +308,16 @@
                 charIndex--;
             } else {
                 dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+            }
+            
+            if (!isDeleting) {
                 charIndex++;
             }
             
-            let typeSpeed = isDeleting ? 40 : 80;
+            let typeSpeed = isDeleting ? 30 : 60;
             
             if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 1500;
+                typeSpeed = 2000; // Okunabilirlik için kelime sonunda bekleme süresi
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
