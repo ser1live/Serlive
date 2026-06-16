@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌊 GERÇEK 3D DALGALI PARÇACIK TUVALİ */
+        /* 🌊 GERÇEK 3D DALGALI PARÇACIK TUVALI */
         #canvas-container {
             position: absolute;
             top: 0;
@@ -43,18 +43,10 @@
             height: 100%;
         }
         
-        /* ✨ KÜÇÜLTÜLMÜŞ VE OPTİMİZE EDİLMİŞ CAM KART (1000004236.jpg için güncellendi) */
+        /* ✨ ANA KONTEYNER */
         .container {
-            background: rgba(255, 255, 255, 0.015);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 32px;
-            padding: 35px 24px; /* İç boşluklar daraltıldı */
-            max-width: 340px;   /* Genişlik 400px'den 340px'e çekildi, böylece arka plan açığa çıktı */
+            max-width: 340px;
             width: 88%;
-            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.85), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.03);
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
@@ -68,14 +60,14 @@
         
         /* Profil Resmi */
         .profile-img {
-            width: 110px; /* Kartla orantılı olarak hafifçe küçültüldü */
+            width: 110px;
             height: 110px;
             border-radius: 50%;
             margin: 0 auto 16px;
             display: block;
             object-fit: cover;
             border: 3px solid rgba(0, 242, 254, 0.35);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
         }
         
@@ -84,19 +76,19 @@
             box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
         }
         
-        /* İsim */
+        /* ✨ KÜÇÜLTÜLMÜŞ İSİM ALANI */
         h1 {
-            font-size: 2.2em; /* Kart boyutuna göre dengelendi */
+            font-size: 1.6em; /* Daha kibar durması için boyutu küçültüldü */
             margin-bottom: 4px;
             font-weight: 600;
             color: #00f2fe;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 25px rgba(0, 242, 254, 0.35);
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
         }
         
         /* Sabit Ünvan */
         .title-tag {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 400;
             color: #ffffff;
             opacity: 0.9;
@@ -107,7 +99,7 @@
         /* Alt Hareketli Yazı Alanı */
         #bioText {
             font-size: 0.85em;
-            margin-bottom: 28px;
+            margin-bottom: 24px;
             min-height: 20px;
             color: #b0b0b5;
             display: flex;
@@ -125,12 +117,25 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+
+        /* 📱 Alt premium cam kart */
+        .links-card {
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 24px;
+            padding: 20px 16px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            width: 100%;
+        }
         
         /* Dikey Sosyal Link Listesi */
         .social-links {
             display: flex;
             flex-direction: column;
-            gap: 14px; /* Butonlar arası boşluk optimize edildi */
+            gap: 14px;
             width: 100%;
         }
         
@@ -139,7 +144,7 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            padding: 14px 20px; /* Dikey yükseklik 16px'den 14px'e düşürüldü */
+            padding: 14px 20px;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -147,7 +152,7 @@
             text-decoration: none;
             border-radius: 14px;
             font-weight: 500;
-            font-size: 0.95rem; /* Yazı boyutu kibarlaştırıldı */
+            font-size: 0.95rem;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -203,9 +208,9 @@
         
         /* Mobil Ekran İyileştirmesi */
         @media (max-width: 480px) {
-            .container { padding: 32px 20px; max-width: 320px; } /* Mobilde yanlardan daha fazla fon görünmesi için 320px yapıldı */
-            h1 { font-size: 2em; }
-            .title-tag { font-size: 0.95rem; }
+            .container { max-width: 310px; }
+            h1 { font-size: 1.4em; } /* Mobilde isim boyutu dengelendi */
+            .title-tag { font-size: 0.9rem; }
             .profile-img { width: 105px; height: 105px; }
         }
     </style>
@@ -216,6 +221,7 @@
     <div id="canvas-container"></div>
 
     <div class="container">
+        <!-- Profil üst alanı tamamen şeffaf ve havada asılı -->
         <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
         
         <h1>SERDAR</h1>
@@ -227,19 +233,22 @@
             <span class="cursor">|</span>
         </div>
 
-        <div class="social-links">
-            <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer" class="instagram pulse-btn">
-                <i class="fab fa-instagram"></i>
-                <span>Instagram</span>
-            </a>
-            <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer" class="tiktok">
-                <i class="fab fa-tiktok"></i>
-                <span>TikTok</span>
-            </a>
-            <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer" class="telegram">
-                <i class="fab fa-telegram-plane"></i>
-                <span>Telegram</span>
-            </a>
+        <!-- Sadece linkleri koruyan şık cam kutu -->
+        <div class="links-card">
+            <div class="social-links">
+                <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer" class="instagram pulse-btn">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer" class="tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                </a>
+                <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer" class="telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>Telegram</span>
+                </a>
+            </div>
         </div>
     </div>
 
