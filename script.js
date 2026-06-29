@@ -1,104 +1,156 @@
-// --- 1. PREMIUM ULTRA-SMOOTH KARA DELİK MOTORU (CANVAS 2D) ---
+// --- 1. SIFIR KASMA ULTRA-GERÇEKÇİ WEBGL SHADER MOTORU ---
 const container = document.getElementById('canvas-container');
 const canvas = document.createElement('canvas');
 container.appendChild(canvas);
-const ctx = canvas.getContext('2d');
+const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-let width, height;
-let particles = [];
-const particleCount = window.innerWidth < 480 ? 120 : 250; // Mobil dostu, kasmayan ideal parçacık sayısı
+if (!gl) {
+    console.error("WebGL desteklenmiyor!");
+}
 
-function resize() {
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+gl.viewport(0, 0, width, height);
+
+// --- GLSL KODLARI (Uzay Bükülmesi ve Gaz Diski Matematiği) ---
+const vertexShaderSource = `
+    attribute vec2 position;
+    void main() {
+        gl_Position = vec4(position, 0.0, 1.0);
+    }
+`;
+
+const fragmentShaderSource = `
+    precision highp float;
+    uniform vec2 u_resolution;
+    uniform float u_time;
+
+    // Gerçekçi kozmik gaz dokusu için gürültü (Noise) fonksiyonu
+    float noise(vec2 p) {
+        return fraction(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+    }
+    
+    float snoise(vec2 p) {
+        vec2 i = floor(p);
+        vec2 f = fract(p);
+        vec2 u = f * f * (3.0 - 2.0 * f);
+        return mix(mix(noise(i + vec2(0.0,0.0)), noise(i + vec2(1.0,0.0)), u.x),
+                   mix(noise(i + vec2(0.0,1.0)), noise(i + vec2(1.0,1.0)), u.x), u.y);
+    }
+
+    void main() {
+        // Koordinatları merkeze göre eşitleme
+        vec2 uv = (gl_FragCoord.xy - u_resolution.xy * 0.5) / u_resolution.y;
+        
+        // Kara deliği izometrik 3D açıya getirmek için uzayı hafifçe eğiyoruz (Fotoğraftaki gibi)
+        uv = vec2(uv.x * 0.9 - uv.y * 0.4, uv.y * 0.5 + uv.x * 0.3);
+
+        float r = length(uv);
+        float angle = atan(uv.y, uv.x);
+
+        // 1. Merkezdeki Mutlak Karanlık (Singularity & Olay Ufku)
+        if (r < 0.09) {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+            return;
+        }
+
+        // 2. Gravitational Lensing (Yerçekimsel Işık Bükülmesi) Etkisi
+        // Merkez yaklaştıkça ışık bükülme katsayısı katlanarak artar
+        float distortion = 0.015 / (r - 0.085);
+        float adjustedRadius = r + distortion;
+
+        // 3. Dönüşüm ve Pürüzsüz Akreasyon Diski (Kozmik Toz Bulutu)
+        // Merkeze yakın yerler daha hızlı döner (Keplerian Disk simülasyonu)
+        float speed = u_time * (0.8 / (adjustedRadius + 0.1));
+        float diskAngle = angle + speed;
+
+        // Gaz dokusunun katmanları (Fotoğraftaki dumanlı yapı için)
+        float gasDensity = snoise(vec2(adjustedRadius * 15.0, diskAngle * 4.0)) * 0.5 + 0.5;
+        gasDensity += snoise(vec2(adjustedRadius * 30.0, diskAngle * 8.0 - u_time)) * 0.25;
+
+        // Diskin sınırları ve parlaması (Fotoğraftaki renk paleti: Turuncu/Beyaz/Mor geçişi)
+        float disk = smoothstep(0.45, 0.12, adjustedRadius) * smoothstep(0.08, 0.16, adjustedRadius);
+        
+        // Yoğunluğa göre renkleri karıştırıyoruz
+        vec3 colorInner = vec3(1.0, 0.85, 0.65); // Sıcak beyaz/sarı çekirdek parlaması
+        vec3 colorMid = vec3(0.95, 0.45, 0.15);   // Fotoğraftaki ana turuncu şeritler
+        vec3 colorOuter = vec3(0.45, 0.05, 0.6);  // Dış kısımdaki mor/erguvan gaz bulutları
+
+        vec3 finalColor = mix(colorOuter, colorMid, smoothstep(0.35, 0.18, adjustedRadius));
+        finalColor = mix(finalColor, colorInner, smoothstep(0.18, 0.11, adjustedRadius));
+        
+        // Gaz yoğunluğuyla rengi birleştirip parlatıyoruz
+        finalColor *= (disk * (0.4 + gasDensity * 0.8));
+        
+        // Foton Halkası (Olay ufkunun hemen dışındaki ince çok parlak çember)
+        float photonRing = smoothstep(0.008, 0.0, abs(r - 0.094));
+        finalColor += vec3(1.0, 0.95, 0.85) * photonRing * 0.8;
+
+        // Uzay boşluğunun genel karanlığıyla birleştirme
+        gl_FragColor = vec4(finalColor, 1.0);
+    }
+`;
+
+// --- SHADER DERLEME VE BAĞLAMA İŞLEMLERİ ---
+function createShader(gl, type, source) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, source);
+    gl.compileShader(shader);
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+        console.error(gl.getShaderInfoLog(shader));
+        gl.deleteShader(shader);
+        return null;
+    }
+    return shader;
+}
+
+const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+    console.error(gl.getProgramInfoLog(program));
+}
+
+gl.useProgram(program);
+
+// Dikdörtgen çizim alanı (Canvas'ı kapla)
+const positionBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+    -1, -1,   1, -1,  -1,  1,
+    -1,  1,   1, -1,   1,  1,
+]), gl.STATIC_DRAW);
+
+const positionAttributeLocation = gl.getAttribLocation(program, "position");
+gl.enableVertexAttribArray(positionAttributeLocation);
+gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+const timeLocation = gl.getUniformLocation(program, "u_time");
+
+window.addEventListener('resize', () => {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
+    gl.viewport(0, 0, width, height);
+});
 
-// Kozmik toz parçacıklarının yapısı (Pürüzsüz akış)
-class KozmikParcacik {
-    constructor() {
-        this.reset();
-        this.angle = Math.random() * Math.PI * 2;
-    }
+// --- ANIMASYON DÖNGÜSÜ (RENDER LOOP) ---
+function render(time) {
+    time *= 0.001; // Saniyeye çevir
 
-    reset() {
-        // Kara deliğin dışından başlayıp merkeze doğru çekilme mantığı
-        this.radius = Math.random() * (Math.max(width, height) * 0.4) + 60;
-        this.speed = (Math.random() * 0.015 + 0.005) * (120 / this.radius); // Kepler yörünge hızı
-        this.size = Math.random() * 1.8 + 0.5;
-        // İç kısımlar neon mavi, dış kısımlar mor/erguvan gaz bulutu
-        this.color = this.radius < 150 ? 'rgba(0, 242, 254, ' + (Math.random() * 0.6 + 0.3) + ')' : 'rgba(157, 0, 255, ' + (Math.random() * 0.4 + 0.1) + ')';
-    }
+    gl.uniform2f(resolutionLocation, width, height);
+    gl.uniform1f(timeLocation, time);
 
-    update() {
-        this.angle -= this.speed; // Saat yönünün tersine dönüş
-        this.radius -= 0.12; // Yavaşça kara deliğin merkezine (olay ufkuna) çekilme
-
-        if (this.radius < 35) { // Olay ufkuna giren parçacık yok olur ve dışarıda yeniden doğar
-            this.reset();
-        }
-    }
-
-    draw() {
-        // Gravitational lensing (yerçekimsel bükülme) simülasyonu için pürüzsüz dairesel çizim
-        const x = width / 2 + Math.cos(this.angle) * this.radius;
-        const y = height / 2 + Math.sin(this.angle) * this.radius * 0.4; // 3D disk görünümü için dikey basıklık
-
-        ctx.beginPath();
-        ctx.arc(x, y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-    }
-}
-
-// Parçacıkları oluştur
-for (let i = 0; i < particleCount; i++) {
-    particles.push(new KozmikParcacik());
-}
-
-// Canlı Döngü (Render Loop)
-function render() {
-    // Kuyruklu yıldız efekti ve duman hissi için hafif şeffaf siyah arka plan örtüsü
-    ctx.fillStyle = 'rgba(0, 0, 2, 0.08)';
-    ctx.fillRect(0, 0, width, height);
-
-    // 1. MERKEZDEKİ GERÇEK KARA DELİK VE OLAY UFKU GLOWU (Yerçekimi Işıması)
-    const centerX = width / 2;
-    const centerY = height / 2;
-
-    // Dış parıltı (Aura)
-    const aura = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, 90);
-    aura.addColorStop(0, 'rgba(0, 242, 254, 0.25)');
-    aura.addColorStop(0.4, 'rgba(157, 0, 255, 0.08)');
-    aura.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = aura;
-    ctx.fillRect(centerX - 100, centerY - 100, 200, 200);
-
-    // Gaz bulutlarını çiz ve güncelle
-    ctx.globalCompositeOperation = 'screen'; // Işıkların üst üste binerek gerçekçi parlamasını sağlar
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
-    ctx.globalCompositeOperation = 'source-over';
-
-    // TAM MERKEZ: Işığı bile yutan mutlak karanlık küre (Singularity)
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 34, 0, Math.PI * 2);
-    ctx.fillStyle = '#000000';
-    ctx.fill();
-    
-    // Olay ufkunun keskin neon çizgisi
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 34, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
     requestAnimationFrame(render);
 }
-render();
+requestAnimationFrame(render);
 
 // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
 const dynamicText = document.getElementById('dynamicText');
