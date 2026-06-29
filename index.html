@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SERDAR · Kozmik Bio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERDAR - Kişisel Bio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,7 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #030206;
+            background-color: #020208;
             color: white;
             display: flex;
             justify-content: center;
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌌 KOZMİK ARKA PLAN VE GERÇEKÇİ KARA DELİK KATMANLARI */
+        /* 🌊 GERÇEK 3D DALGALI PARÇACIK TUVALI */
         #canvas-container {
             position: absolute;
             top: 0;
@@ -34,64 +34,13 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at 48% 48%, #15051e 0%, #030207 60%, #000000 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(180deg, #020208 0%, #050515 100%);
         }
         
-        /* Interstellar Yerçekimsel Işık Bükülme Halkası (Einstein Halkası) */
-        .einstein-ring {
-            position: absolute;
-            width: 320px;
-            height: 320px;
-            border-radius: 50%;
-            background: transparent;
-            box-shadow: 0 0 60px 15px #ff7b00, 
-                        inset 0 0 40px 10px #ffb700,
-                        0 0 120px 30px #7a0099;
-            opacity: 0.85;
-            animation: pulseGlow 6s ease-in-out infinite alternate;
-            top: calc(50% - 160px - 20px); /* Kartın arkasından hafif yukarı kaydırdık */
-            left: calc(50% - 160px - 10px);
-        }
-
-        /* Akışkan Gaz Diski (Accretion Disk) */
-        .accretion-disk {
-            position: absolute;
-            width: 650px;
-            height: 80px;
-            background: radial-gradient(ellipse at center, rgba(255,255,255,0.9) 0%, rgba(255,140,0,0.7) 20%, rgba(150,0,200,0.2) 50%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            transform: rotate(-18deg) scaleX(1.2);
-            opacity: 0.9;
-            filter: blur(2px);
-            box-shadow: 0 0 40px #ff6a00;
-            animation: diskRotate 25s linear infinite;
-            top: calc(50% - 40px - 20px);
-            left: calc(50% - 325px - 10px);
-        }
-
-        /* Olay Ufku (Işığı yutan tam karanlık merkez) */
-        .event-horizon {
-            position: absolute;
-            width: 145px;
-            height: 145px;
-            background: #000000;
-            border-radius: 50%;
-            box-shadow: 0 0 25px 5px #000000;
-            top: calc(50% - 72.5px - 20px);
-            left: calc(50% - 72.5px - 10px);
-        }
-
         canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
             display: block;
             width: 100%;
             height: 100%;
-            pointer-events: none;
         }
         
         /* ✨ ANA KONTEYNER */
@@ -101,6 +50,7 @@
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             position: relative;
             z-index: 1;
+            will-change: transform, opacity;
         }
         
         @keyframes fadeIn {
@@ -108,6 +58,7 @@
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
+        /* Profil Resmi */
         .profile-img {
             width: 110px;
             height: 110px;
@@ -115,40 +66,42 @@
             margin: 0 auto 16px;
             display: block;
             object-fit: cover;
-            border: 3px solid rgba(255, 140, 0, 0.3);
-            box-shadow: 0 0 30px rgba(255, 100, 0, 0.25);
+            border: 3px solid rgba(0, 242, 254, 0.35);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
         }
         
         .profile-img:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 45px rgba(255, 140, 0, 0.5);
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
         }
         
+        /* ✨ KÜÇÜLTÜLMÜŞ İSİM ALANI */
         h1 {
-            font-size: 1.6em;
+            font-size: 1.6em; /* Daha kibar durması için boyutu küçültüldü */
             margin-bottom: 4px;
             font-weight: 600;
-            color: #ffffff;
+            color: #00f2fe;
             letter-spacing: 1.5px;
-            text-shadow: 0 0 25px rgba(255, 255, 255, 0.25);
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
         }
         
+        /* Sabit Ünvan */
         .title-tag {
             font-size: 0.95rem;
             font-weight: 400;
-            color: #ff9d42;
-            opacity: 0.95;
+            color: #ffffff;
+            opacity: 0.9;
             margin-bottom: 10px;
             letter-spacing: 0.5px;
-            text-shadow: 0 0 15px rgba(255, 110, 0, 0.4);
         }
         
+        /* Alt Hareketli Yazı Alanı */
         #bioText {
             font-size: 0.85em;
             margin-bottom: 24px;
             min-height: 20px;
-            color: #c0c0c8;
+            color: #b0b0b5;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -156,7 +109,7 @@
         }
 
         .cursor {
-            color: #ff8c00;
+            color: #00f2fe;
             animation: blink 0.7s infinite;
         }
 
@@ -165,19 +118,20 @@
             50% { opacity: 0; }
         }
 
-        /* 📱 Premium Cam Kart */
+        /* 📱 Alt premium cam kart */
         .links-card {
-            background: rgba(10, 5, 2, 0.25);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border-radius: 24px;
             padding: 20px 16px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.03);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.02);
             width: 100%;
         }
         
+        /* Dikey Sosyal Link Listesi */
         .social-links {
             display: flex;
             flex-direction: column;
@@ -185,22 +139,23 @@
             width: 100%;
         }
         
+        /* Cam Butonlar */
         .social-links a {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             padding: 14px 20px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.005) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.85);
             text-decoration: none;
             border-radius: 14px;
             font-weight: 500;
             font-size: 0.95rem;
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.04), 0 4px 15px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .social-links i {
@@ -210,23 +165,24 @@
             transition: transform 0.3s ease;
         }
 
+        /* Hover Marka Renkleri */
         .social-links a.instagram:hover {
             color: #fccc63;
-            border-color: rgba(225, 48, 108, 0.3);
+            border-color: rgba(225, 48, 108, 0.4);
             background: linear-gradient(135deg, rgba(225, 48, 108, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
             box-shadow: 0 12px 30px rgba(225, 48, 108, 0.2);
         }
 
         .social-links a.tiktok:hover {
-            color: #ffaa44;
-            border-color: rgba(254, 44, 85, 0.3);
-            background: linear-gradient(135deg, rgba(254, 44, 85, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+            color: #00f2fe;
+            border-color: rgba(254, 44, 85, 0.4);
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.08) 0%, rgba(0, 242, 254, 0.03) 100%);
             box-shadow: 0 12px 30px rgba(254, 44, 85, 0.2);
         }
 
         .social-links a.telegram:hover {
             color: #2ea6da;
-            border-color: rgba(46, 166, 218, 0.3);
+            border-color: rgba(46, 166, 218, 0.4);
             background: linear-gradient(135deg, rgba(46, 166, 218, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
             box-shadow: 0 12px 30px rgba(46, 166, 218, 0.2);
         }
@@ -239,59 +195,45 @@
             transform: scale(1.12);
         }
 
+        /* İlk Buton Nabız Efekti */
         .pulse-btn {
             animation: buttonPulse 2s infinite;
         }
 
-        /* Animasyon Tanımlamaları */
         @keyframes buttonPulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.2); }
-            70% { box-shadow: 0 0 0 12px rgba(255, 140, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
-        }
-
-        @keyframes pulseGlow {
-            0% { transform: scale(0.98); opacity: 0.8; filter: blur(1px); }
-            100% { transform: scale(1.02); opacity: 0.95; filter: blur(3px); }
-        }
-
-        @keyframes diskRotate {
-            0% { transform: rotate(-18deg) scaleX(1.2) translateY(0px); }
-            50% { transform: rotate(-16deg) scaleX(1.22) translateY(3px); }
-            100% { transform: rotate(-18deg) scaleX(1.2) translateY(0px); }
+            0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.25); }
+            70% { box-shadow: 0 0 0 12px rgba(0, 242, 254, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
         }
         
+        /* Mobil Ekran İyileştirmesi */
         @media (max-width: 480px) {
             .container { max-width: 310px; }
-            h1 { font-size: 1.4em; }
+            h1 { font-size: 1.4em; } /* Mobilde isim boyutu dengelendi */
             .title-tag { font-size: 0.9rem; }
             .profile-img { width: 105px; height: 105px; }
-            .accretion-disk { width: 480px; left: calc(50% - 240px - 10px); }
-            .einstein-ring { width: 240px; height: 240px; top: calc(50% - 120px - 20px); left: calc(50% - 120px - 10px); }
-            .event-horizon { width: 110px; height: 110px; top: calc(50% - 55px - 20px); left: calc(50% - 55px - 10px); }
         }
     </style>
 </head>
 <body>
 
-    <div id="canvas-container">
-        <div class="einstein-ring"></div>
-        <div class="accretion-disk"></div>
-        <div class="event-horizon"></div>
-        <canvas id="starsCanvas"></canvas>
-    </div>
+    <!-- 🌌 Canlı 3D Dalga için Tuval Konteyneri -->
+    <div id="canvas-container"></div>
 
     <div class="container">
-        <img src="1000005493.jpg" alt="SERDAR" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
+        <!-- Profil üst alanı tamamen şeffaf ve havada asılı -->
+        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
         
         <h1>SERDAR</h1>
-        <div class="title-tag">✦ Solo Developer ✦</div>
+        
+        <div class="title-tag">| Solo Developer |</div>
         
         <div id="bioText">
             <span id="dynamicText"></span>
             <span class="cursor">|</span>
         </div>
 
+        <!-- Sadece linkleri koruyan şık cam kutu -->
         <div class="links-card">
             <div class="social-links">
                 <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer" class="instagram pulse-btn">
@@ -309,49 +251,106 @@
             </div>
         </div>
     </div>
+
+    <!-- 3D Parçacık Dalgası Kütüphanesi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <script>
-        // --- 1. KOZMİK YILDIZ TOZLARI SİMÜLASYONU (CANVAS 2D) ---
-        const canvas = document.getElementById('starsCanvas');
-        const ctx = canvas.getContext('2d');
+        // --- 1. GERÇEK 3D MATRİS DALGA SİMÜLASYONU (THREE.JS) ---
+        const SEPARATION = 45, AMOUNTX = 65, AMOUNTY = 65;
+        let container = document.getElementById('canvas-container');
+        let camera, scene, renderer, particles;
+        let count = 0;
 
-        let stars = [];
-        const numStars = 90;
+        init();
+        animate();
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+        function init() {
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.z = 1000;
+            camera.position.y = 400;
+            camera.position.x = 100;
 
-        // Yıldızları oluştur
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                size: Math.random() * 1.5,
-                alpha: Math.random(),
-                speed: 0.01 + Math.random() * 0.02
-            });
-        }
+            scene = new THREE.Scene();
 
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = "white";
+            const numParticles = AMOUNTX * AMOUNTY;
+            const positions = new Float32Array(numParticles * 3);
+            const colors = new Float32Array(numParticles * 3);
 
-            for (let i = 0; i < numStars; i++) {
-                let s = stars[i];
-                s.alpha += s.speed;
-                if (s.alpha > 1 || s.alpha < 0) {
-                    s.speed = -s.speed; // Işıldama (Twinkle) efekti
+            let i = 0, j = 0;
+            const colorBlue = new THREE.Color('#00f2fe');
+            const colorPurple = new THREE.Color('#9d00ff');
+
+            for (let ix = 0; ix < AMOUNTX; ix++) {
+                for (let iy = 0; iy < AMOUNTY; iy++) {
+                    positions[i] = ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2);
+                    positions[i + 1] = 0;
+                    positions[i + 2] = iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2);
+
+                    const mixRatio = ix / AMOUNTX;
+                    const mixedColor = colorBlue.clone().lerp(colorPurple, mixRatio);
+
+                    colors[j] = mixedColor.r;
+                    colors[j + 1] = mixedColor.g;
+                    colors[j + 2] = mixedColor.b;
+
+                    i += 3;
+                    j += 3;
                 }
-                ctx.globalAlpha = Math.max(0, s.alpha);
-                ctx.fillRect(s.x, s.y, s.size, s.size);
             }
-            requestAnimationFrame(drawStars);
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 3.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.75,
+                sizeAttenuation: true
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            window.addEventListener('resize', onWindowResize);
         }
-        drawStars();
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+        function render() {
+            const positions = particles.geometry.attributes.position.array;
+            let i = 0;
+
+            for (let ix = 0; ix < AMOUNTX; ix++) {
+                for (let iy = 0; iy < AMOUNTY; iy++) {
+                    positions[i + 1] = (Math.sin((ix + count) * 0.2) * 60) +
+                                       (Math.sin((iy + count) * 0.1) * 60);
+                    i += 3;
+                }
+            }
+
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.rotation.y = count * 0.03;
+
+            renderer.render(scene, camera);
+            count += 0.04;
+        }
 
         // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
         const dynamicText = document.getElementById('dynamicText');
@@ -373,6 +372,9 @@
                 charIndex--;
             } else {
                 dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+            }
+            
+            if (!isDeleting) {
                 charIndex++;
             }
             
@@ -391,7 +393,7 @@
         }
         
         window.addEventListener('load', () => {
-            setTimeout(typeEffect, 400);
+            setTimeout(typeEffect, 600);
         });
     </script>
 </body>
