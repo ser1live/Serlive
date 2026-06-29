@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SERDAR | ULTRA COSMIC AI</title>
+<title>SERDAR | Cosmic Bio</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,41 +12,22 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
 
 body{
+  margin:0;
   overflow:hidden;
   background:black;
   color:white;
 }
 
-/* 🌌 SPACE CANVAS */
-#space{
+/* 🌌 BLACK HOLE BACKGROUND */
+#bg{
   position:fixed;
   inset:0;
-  z-index:-2;
-}
-
-/* 🕳️ BLACK HOLE CORE */
-#core{
-  position:fixed;
-  left:50%;
-  top:50%;
-  width:120px;
-  height:120px;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  background:radial-gradient(circle,#000 20%,#00f2fe33 40%,transparent 70%);
-  box-shadow:0 0 80px #00f2fe55;
-  animation:pulse 3s infinite;
   z-index:-1;
 }
 
-@keyframes pulse{
-  0%{transform:translate(-50%,-50%) scale(1);}
-  50%{transform:translate(-50%,-50%) scale(1.2);}
-  100%{transform:translate(-50%,-50%) scale(1);}
-}
-
-/* UI */
+/* UI LAYER */
 .container{
+  position:relative;
   height:100vh;
   display:flex;
   flex-direction:column;
@@ -55,34 +36,37 @@ body{
   text-align:center;
 }
 
+/* PROFILE */
 img{
   width:110px;
+  height:110px;
   border-radius:50%;
   border:2px solid #00f2fe;
-  box-shadow:0 0 25px #00f2fe55;
+  box-shadow:0 0 25px rgba(0,242,254,.4);
 }
 
 h1{
+  margin-top:10px;
   color:#00f2fe;
   letter-spacing:3px;
-  margin-top:10px;
 }
 
-.tag{opacity:.7}
-
-/* AI BOX */
-#ai{
-  margin-top:15px;
-  font-size:.85rem;
+.tag{
   opacity:.7;
+}
+
+#bio{
+  margin-top:10px;
+  opacity:.6;
   min-height:20px;
 }
 
+/* LINKS */
 .links{
   margin-top:20px;
   display:flex;
   flex-direction:column;
-  gap:10px;
+  gap:12px;
   width:240px;
 }
 
@@ -106,15 +90,15 @@ a:hover{
 
 <body>
 
-<canvas id="space"></canvas>
-<div id="core"></div>
+<canvas id="bg"></canvas>
 
 <div class="container">
   <img src="profile.jpg" onerror="this.src='https://i.imgur.com/7k12f3C.png'">
-  <h1>SERDAR</h1>
-  <div class="tag">ULTRA PRO MAX AI SYSTEM</div>
 
-  <div id="ai"></div>
+  <h1>SERDAR</h1>
+  <div class="tag">Cosmic Developer</div>
+
+  <div id="bio"></div>
 
   <div class="links">
     <a href="#">Instagram</a>
@@ -125,85 +109,118 @@ a:hover{
 
 <script>
 /* =========================
-   🌌 BLACK HOLE ENGINE
+   🕳️ REAL BLACK HOLE ENGINE
 ========================= */
 
-const canvas=document.getElementById("space");
-const ctx=canvas.getContext("2d");
+const canvas = document.getElementById("bg");
+const gl = canvas.getContext("webgl");
 
-let w,h,stars=[];
-
-function init(){
-  w=canvas.width=innerWidth;
-  h=canvas.height=innerHeight;
-
-  const density = innerWidth<600 ? 120 : 250;
-
-  stars = Array.from({length:density},()=>({
-    x:(Math.random()-0.5)*w,
-    y:(Math.random()-0.5)*h,
-    z:Math.random()*1000
-  }));
+function resize(){
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 }
-init();
-addEventListener("resize",init);
+resize();
+addEventListener("resize",resize);
 
-let t=0;
-
-function draw(){
-  ctx.fillStyle="black";
-  ctx.fillRect(0,0,w,h);
-
-  const cx=w/2, cy=h/2;
-  t+=0.002;
-
-  for(let s of stars){
-
-    // gravity pull
-    let dx=cx-(cx+s.x/(s.z*0.001));
-    let dy=cy-(cy+s.y/(s.z*0.001));
-    let dist=Math.sqrt(dx*dx+dy*dy)+0.001;
-
-    s.x+=dx/dist*0.02;
-    s.y+=dy/dist*0.02;
-
-    // spiral orbit (galaxy)
-    let rx=s.x*Math.cos(t)-s.y*Math.sin(t);
-    let ry=s.x*Math.sin(t)+s.y*Math.cos(t);
-
-    let x=cx+rx/(s.z*0.001);
-    let y=cy+ry/(s.z*0.001);
-
-    let size=2 - s.z*0.002;
-
-    ctx.beginPath();
-    ctx.arc(x,y,size,0,Math.PI*2);
-    ctx.fillStyle="rgba(0,242,254,0.8)";
-    ctx.fill();
-  }
-
-  requestAnimationFrame(draw);
+const vs = `
+attribute vec2 p;
+void main(){
+  gl_Position = vec4(p,0.0,1.0);
 }
-draw();
+`;
+
+const fs = `
+precision highp float;
+
+uniform vec2 r;
+uniform float t;
+
+void main(){
+  vec2 uv = (gl_FragCoord.xy - 0.5*r)/r.y;
+
+  float d = length(uv);
+
+  // event horizon
+  float hole = smoothstep(0.28,0.0,d);
+
+  // gravitational lens distortion
+  uv += normalize(uv)*0.12/(d+0.05);
+
+  float angle = atan(uv.y,uv.x);
+
+  // accretion disk
+  float disk = sin(angle*12.0 + t*2.0);
+  disk = smoothstep(0.2,0.8,disk);
+  disk *= smoothstep(0.65,0.2,d);
+
+  vec3 col = vec3(0.0);
+
+  col += disk * vec3(0.0,0.8,1.0);
+  col += disk * vec3(0.7,0.0,1.0) * 0.6;
+
+  col *= (1.0 - hole);
+
+  gl_FragColor = vec4(col,1.0);
+}
+`;
+
+function compile(type,src){
+  let s = gl.createShader(type);
+  gl.shaderSource(s,src);
+  gl.compileShader(s);
+  return s;
+}
+
+const prog = gl.createProgram();
+gl.attachShader(prog,compile(gl.VERTEX_SHADER,vs));
+gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs));
+gl.linkProgram(prog);
+gl.useProgram(prog);
+
+const buf = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([
+ -1,-1, 1,-1, -1,1,
+ -1,1,  1,-1,  1,1
+]),gl.STATIC_DRAW);
+
+const pos = gl.getAttribLocation(prog,"p");
+gl.enableVertexAttribArray(pos);
+gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+
+const res = gl.getUniformLocation(prog,"r");
+const time = gl.getUniformLocation(prog,"t");
+
+function loop(t){
+  resize();
+  gl.viewport(0,0,canvas.width,canvas.height);
+
+  gl.uniform2f(res,canvas.width,canvas.height);
+  gl.uniform1f(time,t*0.001);
+
+  gl.drawArrays(gl.TRIANGLES,0,6);
+  requestAnimationFrame(loop);
+}
+loop(0);
 
 /* =========================
-   🤖 AI TYPE SYSTEM
+   TYPE EFFECT
 ========================= */
 
-const ai=document.getElementById("ai");
+const bio=document.getElementById("bio");
 
-const msgs=[
-"AI Core Online...",
-"Analyzing space-time...",
-"Generating identity field...",
-"Serdar system stabilized 🚀"
+const txts=[
+"Entering black hole orbit...",
+"Spacetime bending active...",
+"System stabilized 🚀",
+"Serdar online"
 ];
 
 let i=0,j=0,del=false;
 
 function type(){
-  let w=msgs[i];
-  ai.textContent=w.slice(0,j);
+  let w=txts[i];
+  bio.textContent=w.slice(0,j);
 
   if(!del)j++;
   else j--;
@@ -215,10 +232,10 @@ function type(){
 
   if(j===0){
     del=false;
-    i=(i+1)%msgs.length;
+    i=(i+1)%txts.length;
   }
 
-  setTimeout(type,50);
+  setTimeout(type,55);
 }
 type();
 </script>
