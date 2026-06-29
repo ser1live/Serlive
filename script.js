@@ -1,62 +1,69 @@
-// --- 1. GERÇEK 3D MATRİS DALGA SİMÜLASYONU (THREE.JS) ---
-const SEPARATION = 45, AMOUNTX = 65, AMOUNTY = 65;
+// --- 1. SİMÜLE EDİLMİŞ CANLI KARA DELİK (THREE.JS) ---
 let container = document.getElementById('canvas-container');
-let camera, scene, renderer, particles;
-let count = 0;
+let camera, scene, renderer, particleSystem;
+const particleCount = 2500; // Kara deliğin etrafındaki kozmik toz miktarı
 
-init();
-animate();
+initBlackHole();
+animateBlackHole();
 
-function init() {
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-    camera.position.z = 1000;
-    camera.position.y = 400;
-    camera.position.x = 100;
+function initBlackHole() {
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.z = 500; // Kara deliğe bakış mesafesi
 
     scene = new THREE.Scene();
 
-    const numParticles = AMOUNTX * AMOUNTY;
-    const positions = new Float32Array(numParticles * 3);
-    const colors = new Float32Array(numParticles * 3);
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+    
+    // Her parçacığın özel yörünge verilerini saklamak için diziler
+    window.particleData = [];
 
-    let i = 0, j = 0;
-    const colorBlue = new THREE.Color('#00f2fe');
-    const colorPurple = new THREE.Color('#9d00ff');
+    const colorOuter = new THREE.Color('#9d00ff'); // Dış gaz bulutu (Mor)
+    const colorInner = new THREE.Color('#00f2fe'); // Akreasyon diski içi (Mavi/Neon)
 
-    for (let ix = 0; ix < AMOUNTX; ix++) {
-        for (let iy = 0; iy < AMOUNTY; iy++) {
-            positions[i] = ix * SEPARATION - ((AMOUNTX * SEPARATION) / 2);
-            positions[i + 1] = 0;
-            positions[i + 2] = iy * SEPARATION - ((AMOUNTY * SEPARATION) / 2);
+    for (let i = 0; i < particleCount; i++) {
+        // Kara delik etrafında halkasal (spiral) dağılım matematiği
+        const radius = Math.random() * 280 + 40; // Olay ufku sınırı
+        const angle = Math.random() * Math.PI * 2;
+        const speed = (Math.random() * 0.02 + 0.005) * (150 / radius); // Merkeze yakın olan daha hızlı döner (Kepler Kanunu)
 
-            const mixRatio = ix / AMOUNTX;
-            const mixedColor = colorBlue.clone().lerp(colorPurple, mixRatio);
+        const x = Math.cos(angle) * radius;
+        const y = (Math.random() - 0.5) * (radius * 0.15); // Diskin dikey kalınlığı
+        const z = Math.sin(angle) * radius;
 
-            colors[j] = mixedColor.r;
-            colors[j + 1] = mixedColor.g;
-            colors[j + 2] = mixedColor.b;
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
 
-            i += 3;
-            j += 3;
-        }
+        // Merkeze yakınlık oranına göre renk geçişi (Mavi -> Mor)
+        const mixRatio = (radius - 40) / 280;
+        const mixedColor = colorInner.clone().lerp(colorOuter, mixRatio);
+
+        colors[i * 3] = mixedColor.r;
+        colors[i * 3 + 1] = mixedColor.g;
+        colors[i * 3 + 2] = mixedColor.b;
+
+        window.particleData.push({ radius, angle, speed, yPos: y });
     }
 
-    const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
+    // Toz bulutlarının parlaması için yuvarlak soft malzeme
     const material = new THREE.PointsMaterial({
-        size: 3.5,
+        size: 3.0,
         vertexColors: true,
         transparent: true,
-        opacity: 0.75,
-        sizeAttenuation: true
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending, // Üst üste binen ışıkların parlamasını sağlar
+        depthWrite: false
     });
 
-    particles = new THREE.Points(geometry, material);
-    scene.add(particles);
+    particleSystem = new THREE.Points(geometry, material);
+    scene.add(particleSystem);
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
@@ -70,28 +77,30 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
-    requestAnimationFrame(animate);
-    render();
-}
+function animateBlackHole() {
+    requestAnimationFrame(animateBlackHole);
 
-function render() {
-    const positions = particles.geometry.attributes.position.array;
-    let i = 0;
+    const positions = particleSystem.geometry.attributes.position.array;
 
-    for (let ix = 0; ix < AMOUNTX; ix++) {
-        for (let iy = 0; iy < AMOUNTY; iy++) {
-            positions[i + 1] = (Math.sin((ix + count) * 0.2) * 60) +
-                               (Math.sin((iy + count) * 0.1) * 60);
-            i += 3;
-        }
+    for (let i = 0; i < particleCount; i++) {
+        let data = window.particleData[i];
+        
+        // Açıyı güncelle (Dönme hareketi)
+        data.angle += data.speed;
+        
+        // Işığın yerçekimiyle bükülme ve yörünge simülasyonu
+        positions[i * 3] = Math.cos(data.angle) * data.radius;
+        positions[i * 3 + 1] = data.yPos + Math.sin(data.angle * 0.5) * 5; // Hafif yukarı aşağı dalgalanma
+        positions[i * 3 + 2] = Math.sin(data.angle) * data.radius;
     }
 
-    particles.geometry.attributes.position.needsUpdate = true;
-    particles.rotation.y = count * 0.03;
+    particleSystem.geometry.attributes.position.needsUpdate = true;
+    
+    // Kamerayı hafifçe eğerek kara deliğe 3 boyutlu bir açıdan bakıyoruz (Sinematik görünüm)
+    particleSystem.rotation.x = 0.4; 
+    particleSystem.rotation.z = 0.1;
 
     renderer.render(scene, camera);
-    count += 0.04;
 }
 
 // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
@@ -108,20 +117,14 @@ let isDeleting = false;
 
 function typeEffect() {
     const currentWord = words[wordIndex];
-    
     if (isDeleting) {
         dynamicText.textContent = currentWord.substring(0, charIndex - 1);
         charIndex--;
     } else {
         dynamicText.textContent = currentWord.substring(0, charIndex + 1);
     }
-    
-    if (!isDeleting) {
-        charIndex++;
-    }
-    
+    if (!isDeleting) charIndex++;
     let typeSpeed = isDeleting ? 30 : 60;
-    
     if (!isDeleting && charIndex === currentWord.length) {
         typeSpeed = 2000;
         isDeleting = true;
@@ -130,33 +133,25 @@ function typeEffect() {
         wordIndex = (wordIndex + 1) % words.length;
         typeSpeed = 400; 
     }
-    
     setTimeout(typeEffect, typeSpeed);
 }
+window.addEventListener('load', () => { setTimeout(typeEffect, 600); });
 
-window.addEventListener('load', () => {
-    setTimeout(typeEffect, 600);
-});
-
-// --- 3. 💧 AKIŞKAN SIVI BUTON EFEKTİ SCRIPT'İ ---
+// --- 3. 💧 GERÇEK AKIŞKAN SIVI EFEKTİ ---
 document.querySelectorAll('.liquid-button').forEach(button => {
     button.addEventListener('click', function(e) {
         const liquidBg = this.querySelector('.liquid-bg');
-        
-        // Tıklanan noktanın koordinatlarını hesapla
         const rect = this.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         
-        // Efekt çapını ayarla ve tam tıklandığı noktaya ortala
         liquidBg.style.width = this.offsetWidth + 'px';
         liquidBg.style.height = this.offsetWidth + 'px';
         liquidBg.style.left = x + 'px';
         liquidBg.style.top = y + 'px';
         
-        // Animasyonu sıfırla ve yeniden fırlat
         liquidBg.classList.remove('animate');
-        void liquidBg.offsetWidth; // Tetikleyici (Reflow)
+        void liquidBg.offsetWidth; 
         liquidBg.classList.add('animate');
     });
 });
