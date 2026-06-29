@@ -1,0 +1,215 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #020208;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 🌊 GERÇEK 3D DALGALI PARÇACIK TUVALI */
+#canvas-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: linear-gradient(180deg, #020208 0%, #050515 100%);
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* ✨ ANA KONTEYNER */
+.container {
+    max-width: 340px;
+    width: 88%;
+    animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative;
+    z-index: 1;
+    will-change: transform, opacity;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate3d(0, 25px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+/* Profil Resmi */
+.profile-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: block;
+    object-fit: cover;
+    border: 3px solid rgba(0, 242, 254, 0.35);
+    box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(0, 242, 254, 0.5);
+}
+
+h1 {
+    font-size: 1.6em;
+    margin-bottom: 4px;
+    font-weight: 600;
+    color: #00f2fe;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+}
+
+.title-tag {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #ffffff;
+    opacity: 0.9;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+#bioText {
+    font-size: 0.85em;
+    margin-bottom: 24px;
+    min-height: 20px;
+    color: #b0b0b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.cursor {
+    color: #00f2fe;
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* 📱 Alt premium cam kart */
+.links-card {
+    background: rgba(255, 255, 255, 0.015);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 28px;
+    padding: 22px 18px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    width: 100%;
+}
+
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+}
+
+/* 💧 SIVI BUTON ANA YAPISI (VİDEODAKİ GİBİ BEYAZ CAM) */
+.liquid-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.65) !important; /* Premium yarı saydam beyaz */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 18px;
+    overflow: hidden; /* Sıvı dalgasını içeride tutar */
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4), 0 8px 20px rgba(0, 0, 0, 0.15);
+    text-decoration: none;
+}
+
+/* Buton İçerik Katmanı (Yazıların Sıvı Altında Kalmaması İçin) */
+.btn-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    z-index: 2;
+    pointer-events: none;
+    color: #1a1a24 !important; /* Yazı rengi koyu gri/siyah */
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.social-links i {
+    font-size: 1.3em;
+    width: 32px;
+    text-align: left;
+}
+
+.more-options {
+    color: #555566;
+    font-weight: bold;
+    z-index: 2;
+    pointer-events: none;
+    font-size: 0.85rem;
+}
+
+/* Buton Hover ve Tıklama Esnemesi */
+.liquid-button:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* 🌊 AKIŞKAN SIVI ARKA PLAN DALGASI */
+.liquid-bg {
+    position: absolute;
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.75) 0%, rgba(157, 0, 255, 0.4) 50%, rgba(255,255,255,0) 75%);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s cubic-bezier(0.1, 0.8, 0.3, 1), opacity 0.6s ease-out;
+    opacity: 1;
+    z-index: 1;
+}
+
+/* Dalga fırlama animasyonu */
+.liquid-bg.animate {
+    transform: translate(-50%, -50%) scale(4.5);
+    opacity: 0;
+}
+
+/* İlk Buton Nabız Efekti */
+.pulse-btn {
+    animation: buttonPulse 2s infinite;
+}
+
+@keyframes buttonPulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.35); }
+    70% { box-shadow: 0 0 0 12px rgba(0, 242, 254, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+}
+
+/* Mobil İyileştirmeler */
+@media (max-width: 480px) {
+    .container { max-width: 310px; }
+    h1 { font-size: 1.4em; }
+    .title-tag { font-size: 0.9rem; }
+    .profile-img { width: 105px; height: 105px; }
+    .liquid-button { padding: 14px 18px; }
+}
