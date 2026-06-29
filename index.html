@@ -2,8 +2,8 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SERDAR - Kişisel Bio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SERDAR · Kozmik Bio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -26,7 +26,7 @@
             position: relative;
         }
         
-        /* 🌌 GERÇEKÇİ UZAY VE KARA DELİK ALANI */
+        /* 🌌 tuval tam ekran */
         #canvas-container {
             position: absolute;
             top: 0;
@@ -43,7 +43,7 @@
             height: 100%;
         }
         
-        /* ✨ ANA KONTEYNER */
+        /* ana kart */
         .container {
             max-width: 340px;
             width: 88%;
@@ -58,7 +58,6 @@
             to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
-        /* Profil Resmi */
         .profile-img {
             width: 110px;
             height: 110px;
@@ -76,7 +75,6 @@
             box-shadow: 0 0 35px rgba(255, 140, 0, 0.4);
         }
         
-        /* ✨ KÜÇÜLTÜLMÜŞ İSİM ALANI */
         h1 {
             font-size: 1.6em;
             margin-bottom: 4px;
@@ -86,7 +84,6 @@
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
         
-        /* Sabit Ünvan */
         .title-tag {
             font-size: 0.95rem;
             font-weight: 400;
@@ -97,7 +94,6 @@
             text-shadow: 0 0 10px rgba(255, 110, 0, 0.3);
         }
         
-        /* Alt Hareketli Yazı Alanı */
         #bioText {
             font-size: 0.85em;
             margin-bottom: 24px;
@@ -119,7 +115,6 @@
             50% { opacity: 0; }
         }
 
-        /* 📱 Alt premium cam kart */
         .links-card {
             background: rgba(10, 5, 2, 0.15);
             backdrop-filter: blur(30px);
@@ -132,7 +127,6 @@
             width: 100%;
         }
         
-        /* Dikey Sosyal Link Listesi */
         .social-links {
             display: flex;
             flex-direction: column;
@@ -140,7 +134,6 @@
             width: 100%;
         }
         
-        /* Cam Butonlar */
         .social-links a {
             display: flex;
             align-items: center;
@@ -166,7 +159,6 @@
             transition: transform 0.3s ease;
         }
 
-        /* Hover Marka Renkleri */
         .social-links a.instagram:hover {
             color: #fccc63;
             border-color: rgba(225, 48, 108, 0.3);
@@ -196,7 +188,6 @@
             transform: scale(1.12);
         }
 
-        /* İlk Buton Nabız Efekti */
         .pulse-btn {
             animation: buttonPulse 2s infinite;
         }
@@ -207,7 +198,6 @@
             100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
         }
         
-        /* Mobil Ekran İyileştirmesi */
         @media (max-width: 480px) {
             .container { max-width: 310px; }
             h1 { font-size: 1.4em; }
@@ -218,15 +208,13 @@
 </head>
 <body>
 
-    <!-- 🌌 Canlı Kara Delik için Tuval Konteyneri -->
     <div id="canvas-container"></div>
 
     <div class="container">
-        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
+        <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face&q=80" alt="SERDAR" class="profile-img">
         
         <h1>SERDAR</h1>
-        
-        <div class="title-tag">| Solo Developer |</div>
+        <div class="title-tag">✦ Solo Developer ✦</div>
         
         <div id="bioText">
             <span id="dynamicText"></span>
@@ -251,175 +239,170 @@
         </div>
     </div>
 
-    <!-- WebGL Render Motoru -->
+    <!-- Three.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     
     <script>
-        // --- 1. SİNEMATİK KARA DELİK SHADER SİMÜLASYONU ---
-        let container = document.getElementById('canvas-container');
-        let camera, scene, renderer, material;
-        let startTime = Date.now();
+        (function(){
+            // --- KARA DELİK SHADER (gelişmiş fizik) ---
+            const container = document.getElementById('canvas-container');
+            let camera, scene, renderer, material;
+            const startTime = Date.now();
 
-        // Fotoğraftaki kavisli merceklenme ve gaz diskini simüle eden özel matematiksel GLSL kodu
-        const vertexShader = `
-            varying vec2 vUv;
-            void main() {
-                vUv = uv;
-                gl_Position = vec4(position, 1.0);
-            }
-        `;
+            const vertexShader = `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = vec4(position, 1.0);
+                }
+            `;
 
-        const fragmentShader = `
-            uniform vec2 u_resolution;
-            uniform float u_time;
-            varying vec2 vUv;
+            const fragmentShader = `
+                uniform vec2 u_resolution;
+                uniform float u_time;
+                varying vec2 vUv;
 
-            // Simetrik olmayan gaz dağılımı için gürültü fonksiyonu
-            float noise(in vec2 p) {
-                return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-            }
-
-            void main() {
-                vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);
-                
-                // Kara deliği hafif sağ üste kaydırarak fotoğraftaki estetik açıyı yakalıyoruz
-                uv -= vec2(0.05, 0.05);
-
-                // Yatay diski eğmek için koordinat bükme (Fotoğraftaki asimetrik duruş)
-                float angle = -0.3; 
-                mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
-                vec2 uvRot = rot * uv;
-
-                // Merkez uzaklığı ve açı hesaplama
-                float r = length(uv);
-                float theta = atan(uvRot.y, uvRot.x);
-
-                // Interstellar gravitatonal lensing (Işık bükülme formülü)
-                float holeRadius = 0.16;
-                if (r < holeRadius) {
-                    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Olay Ufku (Tam Karanlık)
-                    return;
+                float hash(vec2 p) {
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
                 }
 
-                // Yerçekimi bükme katsayısı
-                float lensing = 1.0 / (r - holeRadius + 0.01);
-                
-                // Akışkan Gaz Diski (Accretion Disk) Fiziği
-                float diskSample = abs(uvRot.y) * 12.0 * (r * 1.8);
-                float disk = exp(-diskSample * diskSample);
-                
-                // Arka taraftan bükülüp gelen dikey ışık halkası (Einstein Halkası)
-                float ringWidth = 0.025;
-                float ringDist = abs(r - 0.23);
-                float ring = exp(-pow(ringDist/ringWidth, 2.0)) * 1.5;
+                void main() {
+                    vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);
+                    
+                    // estetik kayma
+                    uv -= vec2(0.05, 0.05);
 
-                // Gaz hareketliliği ve dalgalanma efekti
-                float speed = u_time * 0.8;
-                float dynamicNoise = sin(theta * 12.0 - speed) * 0.25 + cos(r * 30.0 - speed * 0.5) * 0.2;
-                
-                // Katmanları birleştirme
-                float finalIntensity = (disk * 2.2 / (r * 2.0)) + (ring * 0.9);
-                finalIntensity += dynamicNoise * disk * 0.4; // Disk içi gaz dalgalanması
+                    // disk eğimi
+                    float angle = -0.3;
+                    mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+                    vec2 uvRot = rot * uv;
 
-                // Fotoğraftaki o muazzam turuncu, morumsu ve beyaz parlamayı veren renk paleti
-                vec3 coreColor = vec3(1.0, 0.95, 0.85);   // Sıcak Beyaz Merkez
-                vec3 orangePlaza = vec3(1.0, 0.45, 0.1);  // Ana Plazma Turuncusu
-                vec3 deepPurple = vec3(0.4, 0.05, 0.3);   // Dış Gaz Bulutu Moru
+                    float r = length(uv);
+                    float theta = atan(uvRot.y, uvRot.x);
 
-                vec3 finalColor = mix(orangePlaza, coreColor, clamp(finalIntensity * 0.3, 0.0, 1.0));
-                finalColor = mix(deepPurple, finalColor, clamp(finalIntensity, 0.0, 1.0));
-                finalColor *= finalIntensity;
+                    float holeRadius = 0.16;
+                    if (r < holeRadius) {
+                        gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+                        return;
+                    }
 
-                // Çok hafif uzay derinliği gürültüsü (Arka plan yıldız esintisi)
-                finalColor += vec3(0.02, 0.02, 0.05) * (1.0 - r);
+                    float lensing = 1.0 / (r - holeRadius + 0.012);
+                    float diskSample = abs(uvRot.y) * 12.0 * (r * 1.8);
+                    float disk = exp(-diskSample * diskSample);
+                    
+                    float ringWidth = 0.025;
+                    float ringDist = abs(r - 0.23);
+                    float ring = exp(-pow(ringDist/ringWidth, 2.0)) * 1.5;
 
-                gl_FragColor = vec4(finalColor, 1.0);
-            }
-        `;
+                    float speed = u_time * 0.8;
+                    float dynamicNoise = sin(theta * 12.0 - speed) * 0.25 + cos(r * 30.0 - speed * 0.5) * 0.2;
+                    
+                    float finalIntensity = (disk * 2.2 / (r * 2.0 + 0.1)) + (ring * 0.9);
+                    finalIntensity += dynamicNoise * disk * 0.4;
 
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+                    vec3 coreColor = vec3(1.0, 0.95, 0.85);
+                    vec3 orangePlaza = vec3(1.0, 0.45, 0.1);
+                    vec3 deepPurple = vec3(0.4, 0.05, 0.3);
 
-            const geometry = new THREE.PlaneGeometry(2, 2);
-            
-            material = new THREE.ShaderMaterial({
-                vertexShader: vertexShader,
-                fragmentShader: fragmentShader,
-                uniforms: {
-                    u_time: { value: 0.0 },
-                    u_resolution: { value: new THREE.Vector2() }
+                    vec3 finalColor = mix(orangePlaza, coreColor, clamp(finalIntensity * 0.3, 0.0, 1.0));
+                    finalColor = mix(deepPurple, finalColor, clamp(finalIntensity, 0.0, 1.0));
+                    finalColor *= finalIntensity * 1.2;
+
+                    // yıldız arka planı (tozlu)
+                    float starfield = hash(uv * 800.0 + floor(u_time * 0.05)) * 0.08;
+                    finalColor += vec3(0.2, 0.15, 0.3) * starfield;
+
+                    gl_FragColor = vec4(finalColor, 1.0);
                 }
-            });
+            `;
 
-            const mesh = new THREE.Mesh(geometry, material);
-            scene.add(mesh);
+            function init() {
+                scene = new THREE.Scene();
+                camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performans optimizasyonu
-            container.appendChild(renderer.domElement);
+                const geometry = new THREE.PlaneGeometry(2, 2);
+                
+                material = new THREE.ShaderMaterial({
+                    vertexShader: vertexShader,
+                    fragmentShader: fragmentShader,
+                    uniforms: {
+                        u_time: { value: 0.0 },
+                        u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+                    }
+                });
 
-            onWindowResize();
-            window.addEventListener('resize', onWindowResize);
-        }
+                const mesh = new THREE.Mesh(geometry, material);
+                scene.add(mesh);
 
-        function onWindowResize() {
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
-        }
+                renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                container.appendChild(renderer.domElement);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            material.uniforms.u_time.value = (Date.now() - startTime) * 0.001;
-            renderer.render(scene, camera);
-        }
+                window.addEventListener('resize', onWindowResize);
+            }
 
-        init();
-        animate();
+            function onWindowResize() {
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+                renderer.setSize(w, h);
+                material.uniforms.u_resolution.value.set(w, h);
+            }
 
-        // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
-        const dynamicText = document.getElementById('dynamicText');
-        const words = [
-            "Web Developer 🌐", 
-            "Turning ideas into reality 💡", 
-            "Focusing on clean code ✨", 
-            "Always adapting, always learning 🚀"
-        ];
-        let wordIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        
-        function typeEffect() {
-            const currentWord = words[wordIndex];
+            function animate() {
+                requestAnimationFrame(animate);
+                material.uniforms.u_time.value = (Date.now() - startTime) * 0.001;
+                renderer.render(scene, camera);
+            }
+
+            init();
+            animate();
+
+            // --- DAKTİLO YAZI (4 farklı mesaj) ---
+            const dynamicText = document.getElementById('dynamicText');
+            const words = [
+                "Web Developer 🌐", 
+                "Turning ideas into reality 💡", 
+                "Focusing on clean code ✨", 
+                "Always adapting, always learning 🚀"
+            ];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
             
-            if (isDeleting) {
-                dynamicText.textContent = currentWord.substring(0, charIndex - 1);
-                charIndex--;
+            function typeEffect() {
+                const currentWord = words[wordIndex];
+                
+                if (isDeleting) {
+                    dynamicText.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+                
+                let typeSpeed = isDeleting ? 30 : 60;
+                
+                if (!isDeleting && charIndex === currentWord.length) {
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    typeSpeed = 400; 
+                }
+                
+                setTimeout(typeEffect, typeSpeed);
+            }
+            
+            // sayfa yüklenince başlat
+            if (document.readyState === 'complete') {
+                setTimeout(typeEffect, 400);
             } else {
-                dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+                window.addEventListener('load', () => {
+                    setTimeout(typeEffect, 400);
+                });
             }
-            
-            if (!isDeleting) {
-                charIndex++;
-            }
-            
-            let typeSpeed = isDeleting ? 30 : 60;
-            
-            if (!isDeleting && charIndex === currentWord.length) {
-                typeSpeed = 2000;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                wordIndex = (wordIndex + 1) % words.length;
-                typeSpeed = 400; 
-            }
-            
-            setTimeout(typeEffect, typeSpeed);
-        }
-        
-        window.addEventListener('load', () => {
-            setTimeout(typeEffect, 600);
-        });
+        })();
     </script>
 </body>
 </html>
