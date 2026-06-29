@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #000002; /* Tamamen kozmik karanlık */
+    background-color: #000003;
     color: white;
     display: flex;
     justify-content: center;
@@ -17,7 +17,7 @@ body {
     position: relative;
 }
 
-/* 🕳️ CANLI KARA DELİK TUVALİ */
+/* 🕳️ KARA DELİK ARKA PLAN ALANI */
 #canvas-container {
     position: absolute;
     top: 0;
@@ -41,6 +41,7 @@ canvas {
     animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     position: relative;
     z-index: 1;
+    will-change: transform, opacity;
 }
 
 @keyframes fadeIn {
@@ -56,17 +57,23 @@ canvas {
     margin: 0 auto 16px;
     display: block;
     object-fit: cover;
-    border: 3px solid rgba(0, 242, 254, 0.35);
-    box-shadow: 0 0 25px rgba(0, 242, 254, 0.25);
+    border: 3px solid rgba(255, 160, 60, 0.35);
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.25);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.profile-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 35px rgba(255, 140, 0, 0.5);
 }
 
 h1 {
     font-size: 1.6em;
     margin-bottom: 4px;
     font-weight: 600;
-    color: #00f2fe;
+    color: #ffb03a;
     letter-spacing: 1.5px;
-    text-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+    text-shadow: 0 0 20px rgba(255, 140, 0, 0.4);
 }
 
 .title-tag {
@@ -75,13 +82,14 @@ h1 {
     color: #ffffff;
     opacity: 0.9;
     margin-bottom: 10px;
+    letter-spacing: 0.5px;
 }
 
 #bioText {
     font-size: 0.85em;
     margin-bottom: 24px;
     min-height: 20px;
-    color: #b0b0b5;
+    color: #d0d0d5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -89,20 +97,24 @@ h1 {
 }
 
 .cursor {
-    color: #00f2fe;
+    color: #ffb03a;
     animation: blink 0.7s infinite;
 }
 
-@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
 
-/* 📱 Premium arka kart */
+/* 📱 Cam Kart */
 .links-card {
-    background: rgba(255, 255, 255, 0.01);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-radius: 28px;
-    padding: 22px 18px;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+    background: rgba(255, 255, 255, 0.015);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-radius: 24px;
+    padding: 20px 16px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 
+                inset 0 1px 1px rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.02);
     width: 100%;
 }
@@ -114,81 +126,74 @@ h1 {
     width: 100%;
 }
 
-/* 💧 SIVI BUTON ANA YAPISI */
-.liquid-button {
-    position: relative;
+.social-links a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.75) !important;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 20px;
-    overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid rgba(255, 255, 255, 0.6) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    justify-content: flex-start;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
-    filter: contrast(18); 
-}
-
-/* Buton İçerik Katmanı */
-.btn-content {
-    display: flex;
-    align-items: center;
-    z-index: 2;
-    pointer-events: none;
-    color: #121212 !important;
-    font-weight: 600;
+    border-radius: 14px;
+    font-weight: 500;
     font-size: 0.95rem;
-    filter: blur(0px); 
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08), 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .social-links i {
     font-size: 1.3em;
-    width: 32px;
+    width: 28px;
+    text-align: left;
+    transition: transform 0.3s ease;
 }
 
-.more-options {
-    color: #333344;
-    font-weight: bold;
-    z-index: 2;
-    pointer-events: none;
-    filter: blur(0px);
+/* Hover Renk Ayarları */
+.social-links a.instagram:hover {
+    color: #fccc63;
+    border-color: rgba(225, 48, 108, 0.4);
+    background: linear-gradient(135deg, rgba(225, 48, 108, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow: 0 12px 30px rgba(225, 48, 108, 0.2);
 }
 
-.liquid-button:hover {
-    transform: translateY(-2px);
+.social-links a.tiktok:hover {
+    color: #00f2fe;
+    border-color: rgba(254, 44, 85, 0.4);
+    background: linear-gradient(135deg, rgba(254, 44, 85, 0.08) 0%, rgba(0, 242, 254, 0.03) 100%);
+    box-shadow: 0 12px 30px rgba(254, 44, 85, 0.2);
 }
 
-/* 🌊 AKIŞKAN SIVI KATMANI */
-.liquid-bg {
-    position: absolute;
-    background: #00f2fe; 
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.65s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.5s ease;
-    z-index: 1;
-    filter: blur(10px); 
+.social-links a.telegram:hover {
+    color: #2ea6da;
+    border-color: rgba(46, 166, 218, 0.4);
+    background: linear-gradient(135deg, rgba(46, 166, 218, 0.08) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow: 0 12px 30px rgba(46, 166, 218, 0.2);
 }
 
-.liquid-bg.animate {
-    transform: translate(-50%, -50%) scale(5.5);
-    opacity: 0;
+.social-links a:hover {
+    transform: translateY(-2px) scale(1.02);
 }
 
-/* İlk Buton Nabız Efekti */
-.pulse-btn { animation: buttonPulse 2s infinite; }
+.social-links a:hover i {
+    transform: scale(1.12);
+}
+
+.pulse-btn {
+    animation: buttonPulse 2s infinite;
+}
+
 @keyframes buttonPulse {
-    0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.35); }
-    70% { box-shadow: 0 0 0 12px rgba(0, 242, 254, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+    0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.25); }
+    70% { box-shadow: 0 0 0 12px rgba(255, 140, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
 }
 
 @media (max-width: 480px) {
     .container { max-width: 310px; }
     h1 { font-size: 1.4em; }
-    .liquid-button { padding: 14px 18px; }
+    .title-tag { font-size: 0.9rem; }
+    .profile-img { width: 105px; height: 105px; }
 }
