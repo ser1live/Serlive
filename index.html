@@ -1,244 +1,425 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SERDAR | Cosmic Bio</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERDAR - Kişisel Bio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #020208;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 🌌 GERÇEKÇİ UZAY VE KARA DELİK ALANI */
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #010103;
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* ✨ ANA KONTEYNER */
+        .container {
+            max-width: 340px;
+            width: 88%;
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            position: relative;
+            z-index: 1;
+            will-change: transform, opacity;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate3d(0, 25px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        
+        /* Profil Resmi */
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: block;
+            object-fit: cover;
+            border: 3px solid rgba(255, 140, 0, 0.25);
+            box-shadow: 0 0 25px rgba(255, 100, 0, 0.15);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px rgba(255, 140, 0, 0.4);
+        }
+        
+        /* ✨ KÜÇÜLTÜLMÜŞ İSİM ALANI */
+        h1 {
+            font-size: 1.6em;
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Sabit Ünvan */
+        .title-tag {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #ff9d42;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 10px rgba(255, 110, 0, 0.3);
+        }
+        
+        /* Alt Hareketli Yazı Alanı */
+        #bioText {
+            font-size: 0.85em;
+            margin-bottom: 24px;
+            min-height: 20px;
+            color: #b0b0b5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        .cursor {
+            color: #ff8c00;
+            animation: blink 0.7s infinite;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins;}
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
 
-body{
-  margin:0;
-  overflow:hidden;
-  background:black;
-  color:white;
-}
+        /* 📱 Alt premium cam kart */
+        .links-card {
+            background: rgba(10, 5, 2, 0.15);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 24px;
+            padding: 20px 16px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.85), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.01);
+            width: 100%;
+        }
+        
+        /* Dikey Sosyal Link Listesi */
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+        
+        /* Cam Butonlar */
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            border-radius: 14px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.04), 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
 
-/* 🌌 BLACK HOLE BACKGROUND */
-#bg{
-  position:fixed;
-  inset:0;
-  z-index:-1;
-}
+        .social-links i {
+            font-size: 1.3em;
+            width: 28px;
+            text-align: left;
+            transition: transform 0.3s ease;
+        }
 
-/* UI LAYER */
-.container{
-  position:relative;
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
+        /* Hover Marka Renkleri */
+        .social-links a.instagram:hover {
+            color: #fccc63;
+            border-color: rgba(225, 48, 108, 0.3);
+            background: linear-gradient(135deg, rgba(225, 48, 108, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            box-shadow: 0 12px 30px rgba(225, 48, 108, 0.15);
+        }
 
-/* PROFILE */
-img{
-  width:110px;
-  height:110px;
-  border-radius:50%;
-  border:2px solid #00f2fe;
-  box-shadow:0 0 25px rgba(0,242,254,.4);
-}
+        .social-links a.tiktok:hover {
+            color: #ffaa44;
+            border-color: rgba(254, 44, 85, 0.3);
+            background: linear-gradient(135deg, rgba(254, 44, 85, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            box-shadow: 0 12px 30px rgba(254, 44, 85, 0.15);
+        }
 
-h1{
-  margin-top:10px;
-  color:#00f2fe;
-  letter-spacing:3px;
-}
+        .social-links a.telegram:hover {
+            color: #2ea6da;
+            border-color: rgba(46, 166, 218, 0.3);
+            background: linear-gradient(135deg, rgba(46, 166, 218, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+            box-shadow: 0 12px 30px rgba(46, 166, 218, 0.15);
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-2px) scale(1.02);
+        }
 
-.tag{
-  opacity:.7;
-}
+        .social-links a:hover i {
+            transform: scale(1.12);
+        }
 
-#bio{
-  margin-top:10px;
-  opacity:.6;
-  min-height:20px;
-}
+        /* İlk Buton Nabız Efekti */
+        .pulse-btn {
+            animation: buttonPulse 2s infinite;
+        }
 
-/* LINKS */
-.links{
-  margin-top:20px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  width:240px;
-}
-
-a{
-  text-decoration:none;
-  color:white;
-  padding:12px;
-  border-radius:10px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  transition:.3s;
-}
-
-a:hover{
-  transform:translateY(-2px);
-  border-color:#00f2fe;
-  background:rgba(0,242,254,0.08);
-}
-</style>
+        @keyframes buttonPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.2); }
+            70% { box-shadow: 0 0 0 12px rgba(255, 140, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 140, 0, 0); }
+        }
+        
+        /* Mobil Ekran İyileştirmesi */
+        @media (max-width: 480px) {
+            .container { max-width: 310px; }
+            h1 { font-size: 1.4em; }
+            .title-tag { font-size: 0.9rem; }
+            .profile-img { width: 105px; height: 105px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<canvas id="bg"></canvas>
+    <!-- 🌌 Canlı Kara Delik için Tuval Konteyneri -->
+    <div id="canvas-container"></div>
 
-<div class="container">
-  <img src="profile.jpg" onerror="this.src='https://i.imgur.com/7k12f3C.png'">
+    <div class="container">
+        <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
+        
+        <h1>SERDAR</h1>
+        
+        <div class="title-tag">| Solo Developer |</div>
+        
+        <div id="bioText">
+            <span id="dynamicText"></span>
+            <span class="cursor">|</span>
+        </div>
 
-  <h1>SERDAR</h1>
-  <div class="tag">Cosmic Developer</div>
+        <div class="links-card">
+            <div class="social-links">
+                <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer" class="instagram pulse-btn">
+                    <i class="fab fa-instagram"></i>
+                    <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer" class="tiktok">
+                    <i class="fab fa-tiktok"></i>
+                    <span>TikTok</span>
+                </a>
+                <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer" class="telegram">
+                    <i class="fab fa-telegram-plane"></i>
+                    <span>Telegram</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
-  <div id="bio"></div>
+    <!-- WebGL Render Motoru -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // --- 1. SİNEMATİK KARA DELİK SHADER SİMÜLASYONU ---
+        let container = document.getElementById('canvas-container');
+        let camera, scene, renderer, material;
+        let startTime = Date.now();
 
-  <div class="links">
-    <a href="#">Instagram</a>
-    <a href="#">TikTok</a>
-    <a href="#">Telegram</a>
-  </div>
-</div>
+        // Fotoğraftaki kavisli merceklenme ve gaz diskini simüle eden özel matematiksel GLSL kodu
+        const vertexShader = `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = vec4(position, 1.0);
+            }
+        `;
 
-<script>
-/* =========================
-   🕳️ REAL BLACK HOLE ENGINE
-========================= */
+        const fragmentShader = `
+            uniform vec2 u_resolution;
+            uniform float u_time;
+            varying vec2 vUv;
 
-const canvas = document.getElementById("bg");
-const gl = canvas.getContext("webgl");
+            // Simetrik olmayan gaz dağılımı için gürültü fonksiyonu
+            float noise(in vec2 p) {
+                return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+            }
 
-function resize(){
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-}
-resize();
-addEventListener("resize",resize);
+            void main() {
+                vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.y, u_resolution.x);
+                
+                // Kara deliği hafif sağ üste kaydırarak fotoğraftaki estetik açıyı yakalıyoruz
+                uv -= vec2(0.05, 0.05);
 
-const vs = `
-attribute vec2 p;
-void main(){
-  gl_Position = vec4(p,0.0,1.0);
-}
-`;
+                // Yatay diski eğmek için koordinat bükme (Fotoğraftaki asimetrik duruş)
+                float angle = -0.3; 
+                mat2 rot = mat2(cos(angle), -sin(angle), sin(angle), cos(angle));
+                vec2 uvRot = rot * uv;
 
-const fs = `
-precision highp float;
+                // Merkez uzaklığı ve açı hesaplama
+                float r = length(uv);
+                float theta = atan(uvRot.y, uvRot.x);
 
-uniform vec2 r;
-uniform float t;
+                // Interstellar gravitatonal lensing (Işık bükülme formülü)
+                float holeRadius = 0.16;
+                if (r < holeRadius) {
+                    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); // Olay Ufku (Tam Karanlık)
+                    return;
+                }
 
-void main(){
-  vec2 uv = (gl_FragCoord.xy - 0.5*r)/r.y;
+                // Yerçekimi bükme katsayısı
+                float lensing = 1.0 / (r - holeRadius + 0.01);
+                
+                // Akışkan Gaz Diski (Accretion Disk) Fiziği
+                float diskSample = abs(uvRot.y) * 12.0 * (r * 1.8);
+                float disk = exp(-diskSample * diskSample);
+                
+                // Arka taraftan bükülüp gelen dikey ışık halkası (Einstein Halkası)
+                float ringWidth = 0.025;
+                float ringDist = abs(r - 0.23);
+                float ring = exp(-pow(ringDist/ringWidth, 2.0)) * 1.5;
 
-  float d = length(uv);
+                // Gaz hareketliliği ve dalgalanma efekti
+                float speed = u_time * 0.8;
+                float dynamicNoise = sin(theta * 12.0 - speed) * 0.25 + cos(r * 30.0 - speed * 0.5) * 0.2;
+                
+                // Katmanları birleştirme
+                float finalIntensity = (disk * 2.2 / (r * 2.0)) + (ring * 0.9);
+                finalIntensity += dynamicNoise * disk * 0.4; // Disk içi gaz dalgalanması
 
-  // event horizon
-  float hole = smoothstep(0.28,0.0,d);
+                // Fotoğraftaki o muazzam turuncu, morumsu ve beyaz parlamayı veren renk paleti
+                vec3 coreColor = vec3(1.0, 0.95, 0.85);   // Sıcak Beyaz Merkez
+                vec3 orangePlaza = vec3(1.0, 0.45, 0.1);  // Ana Plazma Turuncusu
+                vec3 deepPurple = vec3(0.4, 0.05, 0.3);   // Dış Gaz Bulutu Moru
 
-  // gravitational lens distortion
-  uv += normalize(uv)*0.12/(d+0.05);
+                vec3 finalColor = mix(orangePlaza, coreColor, clamp(finalIntensity * 0.3, 0.0, 1.0));
+                finalColor = mix(deepPurple, finalColor, clamp(finalIntensity, 0.0, 1.0));
+                finalColor *= finalIntensity;
 
-  float angle = atan(uv.y,uv.x);
+                // Çok hafif uzay derinliği gürültüsü (Arka plan yıldız esintisi)
+                finalColor += vec3(0.02, 0.02, 0.05) * (1.0 - r);
 
-  // accretion disk
-  float disk = sin(angle*12.0 + t*2.0);
-  disk = smoothstep(0.2,0.8,disk);
-  disk *= smoothstep(0.65,0.2,d);
+                gl_FragColor = vec4(finalColor, 1.0);
+            }
+        `;
 
-  vec3 col = vec3(0.0);
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-  col += disk * vec3(0.0,0.8,1.0);
-  col += disk * vec3(0.7,0.0,1.0) * 0.6;
+            const geometry = new THREE.PlaneGeometry(2, 2);
+            
+            material = new THREE.ShaderMaterial({
+                vertexShader: vertexShader,
+                fragmentShader: fragmentShader,
+                uniforms: {
+                    u_time: { value: 0.0 },
+                    u_resolution: { value: new THREE.Vector2() }
+                }
+            });
 
-  col *= (1.0 - hole);
+            const mesh = new THREE.Mesh(geometry, material);
+            scene.add(mesh);
 
-  gl_FragColor = vec4(col,1.0);
-}
-`;
+            renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Performans optimizasyonu
+            container.appendChild(renderer.domElement);
 
-function compile(type,src){
-  let s = gl.createShader(type);
-  gl.shaderSource(s,src);
-  gl.compileShader(s);
-  return s;
-}
+            onWindowResize();
+            window.addEventListener('resize', onWindowResize);
+        }
 
-const prog = gl.createProgram();
-gl.attachShader(prog,compile(gl.VERTEX_SHADER,vs));
-gl.attachShader(prog,compile(gl.FRAGMENT_SHADER,fs));
-gl.linkProgram(prog);
-gl.useProgram(prog);
+        function onWindowResize() {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            material.uniforms.u_resolution.value.set(window.innerWidth, window.innerHeight);
+        }
 
-const buf = gl.createBuffer();
-gl.bindBuffer(gl.ARRAY_BUFFER,buf);
-gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([
- -1,-1, 1,-1, -1,1,
- -1,1,  1,-1,  1,1
-]),gl.STATIC_DRAW);
+        function animate() {
+            requestAnimationFrame(animate);
+            material.uniforms.u_time.value = (Date.now() - startTime) * 0.001;
+            renderer.render(scene, camera);
+        }
 
-const pos = gl.getAttribLocation(prog,"p");
-gl.enableVertexAttribArray(pos);
-gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+        init();
+        animate();
 
-const res = gl.getUniformLocation(prog,"r");
-const time = gl.getUniformLocation(prog,"t");
-
-function loop(t){
-  resize();
-  gl.viewport(0,0,canvas.width,canvas.height);
-
-  gl.uniform2f(res,canvas.width,canvas.height);
-  gl.uniform1f(time,t*0.001);
-
-  gl.drawArrays(gl.TRIANGLES,0,6);
-  requestAnimationFrame(loop);
-}
-loop(0);
-
-/* =========================
-   TYPE EFFECT
-========================= */
-
-const bio=document.getElementById("bio");
-
-const txts=[
-"Entering black hole orbit...",
-"Spacetime bending active...",
-"System stabilized 🚀",
-"Serdar online"
-];
-
-let i=0,j=0,del=false;
-
-function type(){
-  let w=txts[i];
-  bio.textContent=w.slice(0,j);
-
-  if(!del)j++;
-  else j--;
-
-  if(j===w.length){
-    del=true;
-    setTimeout(type,1200);return;
-  }
-
-  if(j===0){
-    del=false;
-    i=(i+1)%txts.length;
-  }
-
-  setTimeout(type,55);
-}
-type();
-</script>
-
+        // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
+        const dynamicText = document.getElementById('dynamicText');
+        const words = [
+            "Web Developer 🌐", 
+            "Turning ideas into reality 💡", 
+            "Focusing on clean code ✨", 
+            "Always adapting, always learning 🚀"
+        ];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                dynamicText.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                dynamicText.textContent = currentWord.substring(0, charIndex + 1);
+            }
+            
+            if (!isDeleting) {
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 30 : 60;
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                typeSpeed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                typeSpeed = 400; 
+            }
+            
+            setTimeout(typeEffect, typeSpeed);
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(typeEffect, 600);
+        });
+    </script>
 </body>
 </html>
