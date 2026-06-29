@@ -1,107 +1,104 @@
-// --- 1. SİMÜLE EDİLMİŞ CANLI KARA DELİK (THREE.JS) ---
-let container = document.getElementById('canvas-container');
-let camera, scene, renderer, particleSystem;
-const particleCount = 2500; // Kara deliğin etrafındaki kozmik toz miktarı
+// --- 1. PREMIUM ULTRA-SMOOTH KARA DELİK MOTORU (CANVAS 2D) ---
+const container = document.getElementById('canvas-container');
+const canvas = document.createElement('canvas');
+container.appendChild(canvas);
+const ctx = canvas.getContext('2d');
 
-initBlackHole();
-animateBlackHole();
+let width, height;
+let particles = [];
+const particleCount = window.innerWidth < 480 ? 120 : 250; // Mobil dostu, kasmayan ideal parçacık sayısı
 
-function initBlackHole() {
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
-    camera.position.z = 500; // Kara deliğe bakış mesafesi
+function resize() {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
 
-    scene = new THREE.Scene();
-
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    
-    // Her parçacığın özel yörünge verilerini saklamak için diziler
-    window.particleData = [];
-
-    const colorOuter = new THREE.Color('#9d00ff'); // Dış gaz bulutu (Mor)
-    const colorInner = new THREE.Color('#00f2fe'); // Akreasyon diski içi (Mavi/Neon)
-
-    for (let i = 0; i < particleCount; i++) {
-        // Kara delik etrafında halkasal (spiral) dağılım matematiği
-        const radius = Math.random() * 280 + 40; // Olay ufku sınırı
-        const angle = Math.random() * Math.PI * 2;
-        const speed = (Math.random() * 0.02 + 0.005) * (150 / radius); // Merkeze yakın olan daha hızlı döner (Kepler Kanunu)
-
-        const x = Math.cos(angle) * radius;
-        const y = (Math.random() - 0.5) * (radius * 0.15); // Diskin dikey kalınlığı
-        const z = Math.sin(angle) * radius;
-
-        positions[i * 3] = x;
-        positions[i * 3 + 1] = y;
-        positions[i * 3 + 2] = z;
-
-        // Merkeze yakınlık oranına göre renk geçişi (Mavi -> Mor)
-        const mixRatio = (radius - 40) / 280;
-        const mixedColor = colorInner.clone().lerp(colorOuter, mixRatio);
-
-        colors[i * 3] = mixedColor.r;
-        colors[i * 3 + 1] = mixedColor.g;
-        colors[i * 3 + 2] = mixedColor.b;
-
-        window.particleData.push({ radius, angle, speed, yPos: y });
+// Kozmik toz parçacıklarının yapısı (Pürüzsüz akış)
+class KozmikParcacik {
+    constructor() {
+        this.reset();
+        this.angle = Math.random() * Math.PI * 2;
     }
 
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    reset() {
+        // Kara deliğin dışından başlayıp merkeze doğru çekilme mantığı
+        this.radius = Math.random() * (Math.max(width, height) * 0.4) + 60;
+        this.speed = (Math.random() * 0.015 + 0.005) * (120 / this.radius); // Kepler yörünge hızı
+        this.size = Math.random() * 1.8 + 0.5;
+        // İç kısımlar neon mavi, dış kısımlar mor/erguvan gaz bulutu
+        this.color = this.radius < 150 ? 'rgba(0, 242, 254, ' + (Math.random() * 0.6 + 0.3) + ')' : 'rgba(157, 0, 255, ' + (Math.random() * 0.4 + 0.1) + ')';
+    }
 
-    // Toz bulutlarının parlaması için yuvarlak soft malzeme
-    const material = new THREE.PointsMaterial({
-        size: 3.0,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending, // Üst üste binen ışıkların parlamasını sağlar
-        depthWrite: false
+    update() {
+        this.angle -= this.speed; // Saat yönünün tersine dönüş
+        this.radius -= 0.12; // Yavaşça kara deliğin merkezine (olay ufkuna) çekilme
+
+        if (this.radius < 35) { // Olay ufkuna giren parçacık yok olur ve dışarıda yeniden doğar
+            this.reset();
+        }
+    }
+
+    draw() {
+        // Gravitational lensing (yerçekimsel bükülme) simülasyonu için pürüzsüz dairesel çizim
+        const x = width / 2 + Math.cos(this.angle) * this.radius;
+        const y = height / 2 + Math.sin(this.angle) * this.radius * 0.4; // 3D disk görünümü için dikey basıklık
+
+        ctx.beginPath();
+        ctx.arc(x, y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+    }
+}
+
+// Parçacıkları oluştur
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new KozmikParcacik());
+}
+
+// Canlı Döngü (Render Loop)
+function render() {
+    // Kuyruklu yıldız efekti ve duman hissi için hafif şeffaf siyah arka plan örtüsü
+    ctx.fillStyle = 'rgba(0, 0, 2, 0.08)';
+    ctx.fillRect(0, 0, width, height);
+
+    // 1. MERKEZDEKİ GERÇEK KARA DELİK VE OLAY UFKU GLOWU (Yerçekimi Işıması)
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    // Dış parıltı (Aura)
+    const aura = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, 90);
+    aura.addColorStop(0, 'rgba(0, 242, 254, 0.25)');
+    aura.addColorStop(0.4, 'rgba(157, 0, 255, 0.08)');
+    aura.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = aura;
+    ctx.fillRect(centerX - 100, centerY - 100, 200, 200);
+
+    // Gaz bulutlarını çiz ve güncelle
+    ctx.globalCompositeOperation = 'screen'; // Işıkların üst üste binerek gerçekçi parlamasını sağlar
+    particles.forEach(p => {
+        p.update();
+        p.draw();
     });
+    ctx.globalCompositeOperation = 'source-over';
 
-    particleSystem = new THREE.Points(geometry, material);
-    scene.add(particleSystem);
-
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(renderer.domElement);
-
-    window.addEventListener('resize', onWindowResize);
-}
-
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animateBlackHole() {
-    requestAnimationFrame(animateBlackHole);
-
-    const positions = particleSystem.geometry.attributes.position.array;
-
-    for (let i = 0; i < particleCount; i++) {
-        let data = window.particleData[i];
-        
-        // Açıyı güncelle (Dönme hareketi)
-        data.angle += data.speed;
-        
-        // Işığın yerçekimiyle bükülme ve yörünge simülasyonu
-        positions[i * 3] = Math.cos(data.angle) * data.radius;
-        positions[i * 3 + 1] = data.yPos + Math.sin(data.angle * 0.5) * 5; // Hafif yukarı aşağı dalgalanma
-        positions[i * 3 + 2] = Math.sin(data.angle) * data.radius;
-    }
-
-    particleSystem.geometry.attributes.position.needsUpdate = true;
+    // TAM MERKEZ: Işığı bile yutan mutlak karanlık küre (Singularity)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 34, 0, Math.PI * 2);
+    ctx.fillStyle = '#000000';
+    ctx.fill();
     
-    // Kamerayı hafifçe eğerek kara deliğe 3 boyutlu bir açıdan bakıyoruz (Sinematik görünüm)
-    particleSystem.rotation.x = 0.4; 
-    particleSystem.rotation.z = 0.1;
+    // Olay ufkunun keskin neon çizgisi
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, 34, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
-    renderer.render(scene, camera);
+    requestAnimationFrame(render);
 }
+render();
 
 // --- 2. DAKTİLO EFEKTİ SCRIPT'İ ---
 const dynamicText = document.getElementById('dynamicText');
