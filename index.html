@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERDAR - Kişisel Bio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="bg.mp4" type="video/mp4">
+    </video>
+
+    <div class="video-overlay"></div>
+
+    <div class="container">
+        
+        <div class="profile-section">
+            <img src="profile.jpg" alt="Profil Fotoğrafı" class="profile-img" onerror="this.src='https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&h=300&fit=crop&crop=face';">
+            <h1>SERDAR</h1>
+            <div class="title-tag">| Solo Developer |</div>
+            
+            <div class="cyber-font-container">
+                <svg viewBox="0 0 320 45" class="cyber-svg">
+                    <text x="50%" y="28" text-anchor="middle" class="cyber-text">
+                        CODE. DESIGN. DEPLOY. 🚀
+                    </text>
+                </svg>
+            </div>
+            
+            <div id="bioText">
+                <span id="dynamicText"></span>
+                <span class="cursor">|</span>
+            </div>
+        </div>
+
+        <div class="swiper mySwiper">
+            <div class="swiper-wrapper">
+                
+                <div class="swiper-slide card-item">
+                    <a href="https://t.me/ser1live" target="_blank" rel="noopener noreferrer">
+                        <div class="card-content">
+                            <img src="tele-logo.jpg" alt="Telegram" class="card-brand-img">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="swiper-slide card-item">
+                    <a href="https://www.instagram.com/ser_dark_?igsh=MXhzeGY5eDJhMzFxNA==" target="_blank" rel="noopener noreferrer">
+                        <div class="card-content">
+                            <img src="insta-logo.jpg" alt="Instagram" class="card-brand-img">
+                        </div>
+                    </a>
+                </div>
+
+                <div class="swiper-slide card-item">
+                    <a href="https://www.tiktok.com/@serlive7?_t=ZS-90qic9PtnKp&_r=1" target="_blank" rel="noopener noreferrer">
+                        <div class="card-content">
+                            <img src="tiktok-logo.jpg" alt="TikTok" class="card-brand-img">
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
